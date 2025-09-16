@@ -2,6 +2,8 @@ package org.oscar.beansdb;
 
 import jakarta.annotation.PostConstruct;
 import org.oscar.model.Trainee;
+import org.oscar.utils.IGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,18 +15,22 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 @Component
 public class TraineeDB {
 
     public Map<Long, Trainee> traineeMap = new HashMap<>();
+    private IGenerator generator;
 
     @Value("${Trainee.data}")
     private String filepath;
 
-    public static long counterSimulatedIdAutoIncrement =1;
+    public static long counterTraineeSimulatedIdAutoIncrement =1;
 
+    @Autowired
+    public void setGenerator(IGenerator generator) {
+        this.generator = generator;
+    }
 
     @PostConstruct
     public void init() {
@@ -40,20 +46,20 @@ public class TraineeDB {
                 String[] data = linea.split(",");
                 if(data.length==4){
                     Trainee trainee = new Trainee();
-                    trainee.setId(counterSimulatedIdAutoIncrement);
+                    trainee.setId(counterTraineeSimulatedIdAutoIncrement);
                     trainee.setFirstName(data[0]);
                     trainee.setLastName(data[1]);
-                    String username = createUser(data[0],data[1]);
+                    String username = generator.createUser(data[0],data[1],traineeMap);
                     trainee.setUsername(username);
-                    String pass = generatePass();
+                    String pass = generator.generatePass();
                     trainee.setPassword(pass);
                     trainee.setActive(true);
                     LocalDate birth = LocalDate.parse(data[2]);
                     trainee.setDateOfBirth(birth);
                     trainee.setAddress(data[3]);
 
-                    traineeMap.put(counterSimulatedIdAutoIncrement,trainee);
-                    counterSimulatedIdAutoIncrement++;
+                    traineeMap.put(counterTraineeSimulatedIdAutoIncrement,trainee);
+                    counterTraineeSimulatedIdAutoIncrement++;
                 }
 
             }
@@ -63,27 +69,7 @@ public class TraineeDB {
         }
     }
 
-    private String createUser(String firstName, String lastName){
-        String username = firstName+"."+lastName;
-        return username;
-    }
 
-    private String generatePass(){
-        Random random = new Random();
-        String password ="";
-        for (int i = 0; i < 10; i++) {
-            char temp =(char) (65 + random.nextInt(90 - 65 + 1));
-            password+=temp;
-        }
-        return password;
-    }
-
-    public  Boolean isOccupied(String firstName, String lastName){
-        boolean isOcu = traineeMap.values().stream().anyMatch(trainee -> trainee.getFirstName().equals(firstName)&&
-
-                trainee.getLastName().equals(lastName));
-        return isOcu;
-    }
 
 
 

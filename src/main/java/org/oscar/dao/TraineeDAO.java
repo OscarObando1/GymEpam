@@ -6,7 +6,7 @@ import org.oscar.model.Trainee;
 public interface TraineeDAO {
 
     Trainee createTrainee(TraineeDTO dto);
-    Trainee updateTrainee(TraineeDTO dto);
+    Trainee updateTrainee(TraineeDTO dto,long id);
     void deleteTrainee(long id);
     Trainee selectTrainee(String name);
 
