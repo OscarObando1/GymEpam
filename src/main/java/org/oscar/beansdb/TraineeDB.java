@@ -1,7 +1,9 @@
 package org.oscar.beansdb;
 
+import jakarta.annotation.PostConstruct;
 import org.oscar.model.Trainee;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+@Component
 public class TraineeDB {
 
     public Map<Long, Trainee> traineeMap = new HashMap<>();
@@ -23,6 +26,7 @@ public class TraineeDB {
     public static long counterSimulatedIdAutoIncrement =1;
 
 
+    @PostConstruct
     public void init() {
         loadDataCSV(this.filepath);
     }

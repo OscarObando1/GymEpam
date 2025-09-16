@@ -1,7 +1,7 @@
 package org.oscar.model;
 
 import java.time.LocalDate;
-import java.util.Objects;
+
 
 public class Trainee extends User{
     private Long id;
@@ -42,4 +42,14 @@ public class Trainee extends User{
     }
 
 
+    @Override
+    public String toString() {
+        return "Trainee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

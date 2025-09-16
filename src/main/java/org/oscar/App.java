@@ -2,26 +2,20 @@ package org.oscar;
 
 
 import org.oscar.beansdb.TraineeDB;
-import org.oscar.model.Trainee;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
-/**
- * Hello world!
- *
- */
-public class App 
-{
+@Configuration
+@ComponentScan("org.oscar")
+@PropertySource("classpath:application.properties")
+public class App {
     public static void main( String[] args ) {
+
+        ApplicationContext contex = new AnnotationConfigApplicationContext(App.class);
+        System.out.println(contex.getBean(TraineeDB.class).traineeMap.get(1L));
 
 
 
