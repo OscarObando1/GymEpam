@@ -42,6 +42,8 @@ public class Trainee extends User{
     }
 
 
+
+
     @Override
     public String toString() {
         return "Trainee{" +

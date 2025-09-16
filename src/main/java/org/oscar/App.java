@@ -16,6 +16,7 @@ public class App {
 
         ApplicationContext contex = new AnnotationConfigApplicationContext(App.class);
         System.out.println(contex.getBean(TraineeDB.class).traineeMap.get(1L));
+        System.out.println(contex.getBean(TraineeDB.class).isOccupied("Ana","Alvarez"));
 
 
 

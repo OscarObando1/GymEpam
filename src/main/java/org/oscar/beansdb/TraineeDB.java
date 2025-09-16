@@ -78,6 +78,13 @@ public class TraineeDB {
         return password;
     }
 
+    public  Boolean isOccupied(String firstName, String lastName){
+        boolean isOcu = traineeMap.values().stream().anyMatch(trainee -> trainee.getFirstName().equals(firstName)&&
+
+                trainee.getLastName().equals(lastName));
+        return isOcu;
+    }
+
 
 
 }
