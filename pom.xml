@@ -3,11 +3,19 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.oscar</groupId>
+<<<<<<< HEAD
   <artifactId>GymTask</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>GymTask</name>
+=======
+  <artifactId>GymProject</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>GymProject</name>
+>>>>>>> 40f577e993ff501bd72b55ea679c0e2784acd350
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -21,6 +29,7 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+<<<<<<< HEAD
       <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-core</artifactId>
@@ -36,5 +45,7 @@
           <artifactId>jakarta.annotation-api</artifactId>
           <version>2.1.0</version>
       </dependency>
+=======
+>>>>>>> 40f577e993ff501bd72b55ea679c0e2784acd350
   </dependencies>
 </project>

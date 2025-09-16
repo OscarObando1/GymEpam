@@ -1,5 +1,6 @@
 package org.oscar;
 
+<<<<<<< HEAD
 
 import org.oscar.beansdb.TraineeDB;
 import org.oscar.dtos.TraineeDTO;
@@ -46,4 +47,16 @@ public class App {
 
     }
 
+=======
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+    }
+>>>>>>> 40f577e993ff501bd72b55ea679c0e2784acd350
 }
