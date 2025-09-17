@@ -8,6 +8,8 @@ import org.oscar.utils.IGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class TraineeService implements TraineeDAO {
 
@@ -41,6 +43,9 @@ public class TraineeService implements TraineeDAO {
 
     @Override
     public Trainee updateTrainee(TraineeDTO dto,long id) {
+        if (!traineeDB.traineeMap.containsKey(id)) {
+            throw new NoSuchElementException("Not found with id selected");
+        }
         Trainee traineeToUpdate = traineeDB.traineeMap.get(id);
         String username = generator.createUser(dto.getFirstName(), dto.getLastName(), traineeDB.traineeMap);
         traineeToUpdate.setFirstName(dto.getFirstName());
@@ -53,11 +58,14 @@ public class TraineeService implements TraineeDAO {
 
     @Override
     public void deleteTrainee(long id) {
+        if (!traineeDB.traineeMap.containsKey(id)) {
+            throw new NoSuchElementException("Not found with id selected");
+        }
         traineeDB.traineeMap.remove(id);
     }
 
     @Override
     public Trainee selectTrainee(String name) {
-        return traineeDB.traineeMap.values().stream().filter(user->user.getFirstName().equalsIgnoreCase(name)).findAny().get();
+        return traineeDB.traineeMap.values().stream().filter(user->user.getFirstName().equalsIgnoreCase(name)).findAny().orElseThrow(()-> new NoSuchElementException("Not found with id selected"));
     }
 }

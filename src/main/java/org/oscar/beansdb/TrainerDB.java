@@ -1,7 +1,9 @@
 package org.oscar.beansdb;
 
 import jakarta.annotation.PostConstruct;
-import org.oscar.model.Trainee;
+
+import org.oscar.model.Trainer;
+import org.oscar.model.TrainingType;
 import org.oscar.utils.IGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,20 +14,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class TraineeDB {
-
-    public Map<Long, Trainee> traineeMap = new HashMap<>();
+public class TrainerDB {
+    public Map<Long, Trainer> trainerMap = new HashMap<>();
     private IGenerator generator;
 
-    @Value("${Trainee.data}")
+    @Value("${Trainer.data}")
     private String filepath;
 
-    public static long counterTraineeSimulatedIdAutoIncrement =1;
+    public static long counterTrainerSimulatedIdAutoIncrement =1;
 
     @Autowired
     public void setGenerator(IGenerator generator) {
@@ -44,22 +44,19 @@ public class TraineeDB {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] data = linea.split(",");
-                if(data.length==4){
-                    Trainee trainee = new Trainee();
-                    trainee.setId(counterTraineeSimulatedIdAutoIncrement);
-                    trainee.setFirstName(data[0]);
-                    trainee.setLastName(data[1]);
-                    String username = generator.createUser(data[0],data[1],traineeMap);
-                    trainee.setUsername(username);
-                    String pass = generator.generatePass();
-                    trainee.setPassword(pass);
-                    trainee.setActive(true);
-                    LocalDate birth = LocalDate.parse(data[2]);
-                    trainee.setDateOfBirth(birth);
-                    trainee.setAddress(data[3]);
-
-                    traineeMap.put(counterTraineeSimulatedIdAutoIncrement,trainee);
-                    counterTraineeSimulatedIdAutoIncrement++;
+                if(data.length==3){
+                   Trainer trainer = new Trainer();
+                   trainer.setId(counterTrainerSimulatedIdAutoIncrement);
+                   trainer.setFirstName(data[0]);
+                   trainer.setLastName(data[1]);
+                   String username = generator.createUser(data[0],data[1],trainerMap);
+                   trainer.setUsername(username);
+                   String pass = generator.generatePass();
+                   trainer.setPassword(pass);
+                   trainer.setActive(true);
+                   trainer.setSpecialization(TrainingType.valueOf(data[2]));
+                   trainerMap.put(counterTrainerSimulatedIdAutoIncrement,trainer);
+                   counterTrainerSimulatedIdAutoIncrement++;
                 }
 
             }
@@ -68,9 +65,4 @@ public class TraineeDB {
             e.printStackTrace();
         }
     }
-
-
-
-
-
 }

@@ -1,6 +1,7 @@
 package org.oscar;
 
 import org.oscar.beansdb.TraineeDB;
+import org.oscar.beansdb.TrainerDB;
 import org.oscar.dtos.TraineeDTO;
 import org.oscar.service.TraineeService;
 import org.springframework.context.ApplicationContext;
@@ -31,7 +32,8 @@ public class App {
         contex.getBean(TraineeService.class).updateTrainee(traineeDTO3, 5l);
         System.out.println("=======================================================");
         contex.getBean(TraineeDB.class).traineeMap.entrySet().stream().forEach(System.out::println);
-
+        System.out.println("========================================================");
+        contex.getBean(TrainerDB.class).trainerMap.entrySet().stream().forEach(System.out::println);
 
     }
 
