@@ -1,7 +1,5 @@
 package org.oscar;
 
-<<<<<<< HEAD
-
 import org.oscar.beansdb.TraineeDB;
 import org.oscar.dtos.TraineeDTO;
 import org.oscar.service.TraineeService;
@@ -17,46 +15,24 @@ import java.time.LocalDate;
 @ComponentScan("org.oscar")
 @PropertySource("classpath:application.properties")
 public class App {
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
 
         ApplicationContext contex = new AnnotationConfigApplicationContext(App.class);
         System.out.println(contex.getBean(TraineeDB.class).traineeMap.get(1L));
-        TraineeDTO traineeDTO = new TraineeDTO("Ana","Alvarez", LocalDate.parse("2000-01-01"),"calle no falsa");
+        TraineeDTO traineeDTO = new TraineeDTO("Ana", "Alvarez", LocalDate.parse("2000-01-01"), "calle no falsa");
         System.out.println(contex.getBean(TraineeService.class).createTrainee(traineeDTO));
         System.out.println(contex.getBean(TraineeDB.class).traineeMap.get(2L));
-        TraineeDTO traineeDTO2 = new TraineeDTO("Ana","Alvarez", LocalDate.parse("2000-01-01"),"calle experimento");
+        TraineeDTO traineeDTO2 = new TraineeDTO("Ana", "Alvarez", LocalDate.parse("2000-01-01"), "calle experimento");
         System.out.println(contex.getBean(TraineeService.class).createTrainee(traineeDTO2));
         contex.getBean(TraineeService.class).deleteTrainee(4l);
         contex.getBean(TraineeDB.class).traineeMap.entrySet().stream().forEach(System.out::println);
         System.out.println(contex.getBean(TraineeService.class).selectTrainee("carlos"));
-        TraineeDTO traineeDTO3= new TraineeDTO("Hola","Yo", LocalDate.parse("2004-02-02"),"probando el upodate");
-        contex.getBean(TraineeService.class).updateTrainee(traineeDTO3,5l);
+        TraineeDTO traineeDTO3 = new TraineeDTO("Hola", "Yo", LocalDate.parse("2004-02-02"), "probando el upodate");
+        contex.getBean(TraineeService.class).updateTrainee(traineeDTO3, 5l);
         System.out.println("=======================================================");
         contex.getBean(TraineeDB.class).traineeMap.entrySet().stream().forEach(System.out::println);
 
 
-
-
-
-
-
-
-
-
-
-
     }
 
-=======
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
->>>>>>> 40f577e993ff501bd72b55ea679c0e2784acd350
 }
