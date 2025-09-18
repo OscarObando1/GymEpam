@@ -3,7 +3,10 @@ package org.oscar;
 import org.oscar.beansdb.TraineeDB;
 import org.oscar.beansdb.TrainerDB;
 import org.oscar.dtos.TraineeDTO;
+import org.oscar.dtos.TrainerDTO;
+import org.oscar.model.TrainingType;
 import org.oscar.service.TraineeService;
+import org.oscar.service.TrainerService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -34,6 +37,13 @@ public class App {
         contex.getBean(TraineeDB.class).traineeMap.entrySet().stream().forEach(System.out::println);
         System.out.println("========================================================");
         contex.getBean(TrainerDB.class).trainerMap.entrySet().stream().forEach(System.out::println);
+        TrainerDTO trainerDTO = new TrainerDTO("James","Bond", TrainingType.CARDIO);
+        System.out.println("===========================================================");
+        System.out.println(contex.getBean(TrainerService.class).createTrainer(trainerDTO));
+        contex.getBean(TrainerDB.class).trainerMap.entrySet().stream().forEach(System.out::println);
+        System.out.println("=============================================================");
+
+
 
     }
 

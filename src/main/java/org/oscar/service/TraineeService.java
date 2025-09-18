@@ -66,6 +66,6 @@ public class TraineeService implements TraineeDAO {
 
     @Override
     public Trainee selectTrainee(String name) {
-        return traineeDB.traineeMap.values().stream().filter(user->user.getFirstName().equalsIgnoreCase(name)).findAny().orElseThrow(()-> new NoSuchElementException("Not found with id selected"));
+        return traineeDB.traineeMap.values().stream().filter(user->user.getFirstName().equalsIgnoreCase(name)).findAny().orElseThrow(()-> new NoSuchElementException("Not found with name selected"));
     }
 }
