@@ -2,6 +2,7 @@ package org.oscar;
 
 import org.oscar.beansdb.TraineeDB;
 import org.oscar.beansdb.TrainerDB;
+import org.oscar.beansdb.TrainingDB;
 import org.oscar.dtos.TraineeDTO;
 import org.oscar.dtos.TrainerDTO;
 import org.oscar.model.TrainingType;
@@ -42,6 +43,8 @@ public class App {
         System.out.println(contex.getBean(TrainerService.class).createTrainer(trainerDTO));
         contex.getBean(TrainerDB.class).trainerMap.entrySet().stream().forEach(System.out::println);
         System.out.println("=============================================================");
+        contex.getBean(TrainingDB.class).trainingMap.entrySet().stream().forEach(System.out::println);
+
 
 
 
