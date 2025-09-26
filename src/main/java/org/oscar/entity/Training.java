@@ -1,6 +1,7 @@
-package org.oscar.model;
+package org.oscar.entity;
 
-import java.time.Duration;
+import org.oscar.enums.TrainingType;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -11,12 +12,12 @@ public class Training {
     private String name;
     private TrainingType trainingType;
     private LocalDate trainingDate;
-    private Duration durationTraining;
+    private Integer durationTraining;
 
     public Training() {
     }
 
-    public Training(Long id, Long trainerId, Long traineeId, String name, TrainingType trainingType, LocalDate trainingDate, Duration durationTraining) {
+    public Training(Long id, Long trainerId, Long traineeId, String name, TrainingType trainingType, LocalDate trainingDate, Integer durationTraining) {
         Id = id;
         this.trainerId = trainerId;
         this.traineeId = traineeId;
@@ -74,12 +75,8 @@ public class Training {
         this.trainingDate = trainingDate;
     }
 
-    public Duration getDurationTraining() {
+    public Integer getDurationTraining() {
         return durationTraining;
-    }
-
-    public void setDurationTraining(Duration durationTraining) {
-        this.durationTraining = durationTraining;
     }
 
     @Override
@@ -102,16 +99,4 @@ public class Training {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Training{" +
-                "Id=" + Id +
-                ", trainerId=" + trainerId +
-                ", traineeId=" + traineeId +
-                ", name='" + name + '\'' +
-                ", trainingType=" + trainingType +
-                ", trainingDate=" + trainingDate +
-                ", durationTraining=" + durationTraining +
-                '}';
-    }
 }

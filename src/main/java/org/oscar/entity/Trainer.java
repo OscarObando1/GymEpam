@@ -1,4 +1,6 @@
-package org.oscar.model;
+package org.oscar.entity;
+
+import org.oscar.enums.TrainingType;
 
 import java.util.Objects;
 
@@ -47,15 +49,4 @@ public class Trainer extends User{
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Trainer{" +
-                "id=" + id +
-                ", specialization=" + specialization +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", isActive=" + isActive +
-                '}';
-    }
 }

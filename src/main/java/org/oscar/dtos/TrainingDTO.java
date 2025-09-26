@@ -1,8 +1,6 @@
 package org.oscar.dtos;
 
-import org.oscar.model.TrainingType;
-
-import java.time.Duration;
+import org.oscar.enums.TrainingType;
 import java.time.LocalDate;
 
 public class TrainingDTO {
@@ -11,12 +9,12 @@ public class TrainingDTO {
     private String name;
     private TrainingType trainingType;
     private LocalDate date;
-    private Duration duration;
+    private Integer duration;
 
     public TrainingDTO() {
     }
 
-    public TrainingDTO(long trainerId, long traineeId, String name, TrainingType trainingType, LocalDate date, Duration duration) {
+    public TrainingDTO(long trainerId, long traineeId, String name, TrainingType trainingType, LocalDate date, Integer duration) {
         this.trainerId = trainerId;
         this.traineeId = traineeId;
         this.name = name;
@@ -65,11 +63,11 @@ public class TrainingDTO {
         this.date = date;
     }
 
-    public Duration getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Duration duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 }

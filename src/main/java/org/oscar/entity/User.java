@@ -1,4 +1,4 @@
-package org.oscar.model;
+package org.oscar.entity;
 
 import java.util.Objects;
 

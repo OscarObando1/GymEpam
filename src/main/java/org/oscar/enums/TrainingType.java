@@ -1,4 +1,4 @@
-package org.oscar.model;
+package org.oscar.enums;
 
 public enum TrainingType {
     LIFTING,

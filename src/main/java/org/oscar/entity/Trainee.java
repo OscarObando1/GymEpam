@@ -1,4 +1,4 @@
-package org.oscar.model;
+package org.oscar.entity;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -60,14 +60,4 @@ public class Trainee extends User{
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Trainee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", isActive=" + isActive +
-                '}';
-    }
 }

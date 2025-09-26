@@ -1,27 +1,27 @@
 package org.oscar.dtos;
 
-import org.oscar.model.TrainingType;
+import org.oscar.enums.TrainingType;
 
 public class TrainerDTO {
-    private String fisrtName;
+    private String firstName;
     private String lastName;
-    private TrainingType specialzation;
+    private TrainingType specialization;
 
     public TrainerDTO() {
     }
 
-    public TrainerDTO(String fisrtName, String lastName, TrainingType specialzation) {
-        this.fisrtName = fisrtName;
+    public TrainerDTO(String fisrtName, String lastName, TrainingType specialization) {
+        this.firstName = fisrtName;
         this.lastName = lastName;
-        this.specialzation = specialzation;
+        this.specialization = specialization;
     }
 
-    public String getFisrtName() {
-        return fisrtName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFisrtName(String fisrtName) {
-        this.fisrtName = fisrtName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -32,11 +32,11 @@ public class TrainerDTO {
         this.lastName = lastName;
     }
 
-    public TrainingType getSpecialzation() {
-        return specialzation;
+    public TrainingType getSpecialization() {
+        return specialization;
     }
 
-    public void setSpecialzation(TrainingType specialzation) {
-        this.specialzation = specialzation;
+    public void setSpecialization(TrainingType specialization) {
+        this.specialization = specialization;
     }
 }
