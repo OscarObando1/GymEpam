@@ -1,10 +1,18 @@
 package org.oscar.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.oscar.enums.TrainingType;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Training {
     private Long Id;
     private Long trainerId;
@@ -14,70 +22,6 @@ public class Training {
     private LocalDate trainingDate;
     private Integer durationTraining;
 
-    public Training() {
-    }
-
-    public Training(Long id, Long trainerId, Long traineeId, String name, TrainingType trainingType, LocalDate trainingDate, Integer durationTraining) {
-        Id = id;
-        this.trainerId = trainerId;
-        this.traineeId = traineeId;
-        this.name = name;
-        this.trainingType = trainingType;
-        this.trainingDate = trainingDate;
-        this.durationTraining = durationTraining;
-    }
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
-
-    public Long getTrainerId() {
-        return trainerId;
-    }
-
-    public void setTrainerId(Long trainerId) {
-        this.trainerId = trainerId;
-    }
-
-    public Long getTraineeId() {
-        return traineeId;
-    }
-
-    public void setTraineeId(Long traineeId) {
-        this.traineeId = traineeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public TrainingType getTrainingType() {
-        return trainingType;
-    }
-
-    public void setTrainingType(TrainingType trainingType) {
-        this.trainingType = trainingType;
-    }
-
-    public LocalDate getTrainingDate() {
-        return trainingDate;
-    }
-
-    public void setTrainingDate(LocalDate trainingDate) {
-        this.trainingDate = trainingDate;
-    }
-
-    public Integer getDurationTraining() {
-        return durationTraining;
-    }
 
     @Override
     public boolean equals(Object o) {

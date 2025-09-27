@@ -1,36 +1,20 @@
 package org.oscar.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.oscar.enums.TrainingType;
 
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Trainer extends User{
     private Long id;
     private TrainingType specialization;
-
-    public Trainer() {
-    }
-
-    public Trainer(Long id, TrainingType specialization) {
-        this.id = id;
-        this.specialization = specialization;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public TrainingType getSpecialization() {
-        return specialization;
-    }
-
-    public void setSpecialization(TrainingType specialization) {
-        this.specialization = specialization;
-    }
 
     @Override
     public boolean equals(Object o) {

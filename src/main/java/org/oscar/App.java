@@ -8,7 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan("org.oscar")
-@PropertySource("classpath:application.properties")
 public class App {
     public static void main(String[] args) {
 
