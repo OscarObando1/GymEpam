@@ -1,5 +1,6 @@
 package org.oscar.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,11 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "trainee")
 public class Trainee extends User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String address;
     private LocalDate dateOfBirth;

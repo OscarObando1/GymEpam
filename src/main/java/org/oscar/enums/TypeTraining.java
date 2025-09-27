@@ -1,6 +1,6 @@
 package org.oscar.enums;
 
-public enum TrainingType {
+public enum TypeTraining {
     LIFTING,
     CARDIO,
     CROSSFIT;

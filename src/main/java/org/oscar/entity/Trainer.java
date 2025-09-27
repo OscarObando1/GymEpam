@@ -1,10 +1,10 @@
 package org.oscar.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.oscar.enums.TrainingType;
 
 import java.util.Objects;
 
@@ -12,25 +12,25 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "trainer")
 public class Trainer extends User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne
     private TrainingType specialization;
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-
         Trainer trainer = (Trainer) o;
-        return Objects.equals(id, trainer.id) && specialization == trainer.specialization;
+        return Objects.equals(id, trainer.id) && Objects.equals(specialization, trainer.specialization);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + Objects.hashCode(id);
-        result = 31 * result + Objects.hashCode(specialization);
-        return result;
+        return Objects.hash(super.hashCode(), id, specialization);
     }
-
 }

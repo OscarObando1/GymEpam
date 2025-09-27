@@ -1,6 +1,7 @@
 package org.oscar.dtos;
 
-import org.oscar.enums.TrainingType;
+
+import org.oscar.entity.TrainingType;
 
 public class TrainerDTO {
     private String firstName;

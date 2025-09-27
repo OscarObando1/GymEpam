@@ -1,6 +1,8 @@
 package org.oscar.dtos;
 
-import org.oscar.enums.TrainingType;
+
+import org.oscar.entity.TrainingType;
+
 import java.time.LocalDate;
 
 public class TrainingDTO {
