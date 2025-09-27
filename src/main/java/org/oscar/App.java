@@ -22,11 +22,13 @@ public class App {
 
         ApplicationContext contex = new AnnotationConfigApplicationContext(App.class);
 
-        TraineeDTO dto = new TraineeDTO("Oscar","Obando1", LocalDate.parse("1991-03-30"),"calle falsa 123");
+        TraineeDTO dto = new TraineeDTO("Oscar","Obando", LocalDate.parse("1991-03-30"),"calle falsa 123");
         Trainee trainee= contex.getBean(Mapper.class).mapTrainee(dto);
 
 
         contex.getBean(TraineeService.class).save(dto);
+        TraineeDTO dto2 = new TraineeDTO("Oscar","Obando", LocalDate.parse("1991-03-30"),"calle falsa");
+        contex.getBean(TraineeService.class).save(dto2);
 
 
 

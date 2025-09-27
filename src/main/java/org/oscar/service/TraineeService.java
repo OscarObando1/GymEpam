@@ -22,8 +22,6 @@ public class TraineeService implements TraineeRepository {
     @Override
     public Trainee save(TraineeDTO dto) {
         Trainee trainee = mapper.mapTrainee(dto);
-        trainee.setUsername("si se pudo");
-        trainee.setPassword("12345");
         entityManager.getTransaction().begin();
         entityManager.persist(trainee);
         entityManager.getTransaction().commit();
