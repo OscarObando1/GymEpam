@@ -1,10 +1,10 @@
 package org.oscar.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.oscar.enums.TrainingType;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,11 +13,18 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "training")
 public class Training {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
+    @Transient
     private Long trainerId;
+    @Transient
     private Long traineeId;
     private String name;
+    @Transient
     private TrainingType trainingType;
     private LocalDate trainingDate;
     private Integer durationTraining;
@@ -26,21 +33,12 @@ public class Training {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-
         Training training = (Training) o;
-        return Objects.equals(Id, training.Id) && Objects.equals(trainerId, training.trainerId) && Objects.equals(traineeId, training.traineeId) && Objects.equals(name, training.name) && trainingType == training.trainingType && Objects.equals(trainingDate, training.trainingDate) && Objects.equals(durationTraining, training.durationTraining);
+        return Objects.equals(Id, training.Id) && Objects.equals(trainerId, training.trainerId) && Objects.equals(traineeId, training.traineeId) && Objects.equals(name, training.name) && Objects.equals(trainingType, training.trainingType) && Objects.equals(trainingDate, training.trainingDate) && Objects.equals(durationTraining, training.durationTraining);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(Id);
-        result = 31 * result + Objects.hashCode(trainerId);
-        result = 31 * result + Objects.hashCode(traineeId);
-        result = 31 * result + Objects.hashCode(name);
-        result = 31 * result + Objects.hashCode(trainingType);
-        result = 31 * result + Objects.hashCode(trainingDate);
-        result = 31 * result + Objects.hashCode(durationTraining);
-        return result;
+        return Objects.hash(Id, trainerId, traineeId, name, trainingType, trainingDate, durationTraining);
     }
-
 }

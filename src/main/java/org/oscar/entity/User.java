@@ -1,5 +1,6 @@
 package org.oscar.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,22 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "user")
 public abstract class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long  id;
+    @Column(name = "first_name",nullable = false)
     protected String firstName;
+    @Column(name = "last_name",nullable = false)
     protected String lastName;
+    @Column(name = "username",nullable = false)
     protected String username;
+    @Column(name = "password",nullable = false)
     protected String password;
+    @Column(name = "active",nullable = false)
     protected Boolean isActive;
 
 

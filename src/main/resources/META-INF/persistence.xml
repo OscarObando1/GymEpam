@@ -5,15 +5,21 @@
              version="3.0">
 
     <persistence-unit name="GymApp" transaction-type="RESOURCE_LOCAL">
+        <class>org.oscar.entity.User</class>
+        <class>org.oscar.entity.Trainee</class>
+        <class>org.oscar.entity.TrainingType</class>
+        <class>org.oscar.entity.Trainer</class>
+        <class>org.oscar.entity.Training</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gymdb"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value="toor"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="jakarta.persistence.provider" value="org.hibernate.jpa.HibernatePersistenceProvider"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
 
