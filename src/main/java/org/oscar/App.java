@@ -30,6 +30,9 @@ public class App {
         TraineeDTO dto2 = new TraineeDTO("Oscar","Obando", LocalDate.parse("1991-03-30"),"calle falsa");
         contex.getBean(TraineeService.class).save(dto2);
 
+        TraineeDTO dto3 = new TraineeDTO("Oscar","Obando", LocalDate.parse("1991-03-30"),"calle falsa");
+        contex.getBean(TraineeService.class).save(dto3);
+
 
 
 

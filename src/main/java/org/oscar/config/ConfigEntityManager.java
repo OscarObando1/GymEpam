@@ -1,4 +1,4 @@
-package org.oscar.utils;
+package org.oscar.config;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
