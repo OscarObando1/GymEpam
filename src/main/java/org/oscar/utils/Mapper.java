@@ -1,8 +1,11 @@
 package org.oscar.utils;
 
 import org.oscar.dtos.TraineeDTO;
+import org.oscar.dtos.TrainerDTO;
 import org.oscar.dtos.response.TraineeResponse;
+import org.oscar.dtos.response.TrainerResponse;
 import org.oscar.entity.Trainee;
+import org.oscar.entity.Trainer;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,6 +26,22 @@ public class Mapper {
         TraineeResponse response = new TraineeResponse();
         response.setFirstName(trainee.getFirstName());
         response.setLastName(trainee.getLastName());
+        return response;
+    }
+
+    public Trainer mapTrainer(TrainerDTO dto){
+        Trainer trainer = new Trainer();
+        trainer.setFirstName(dto.getFirstName());
+        trainer.setLastName(dto.getLastName());
+        trainer.setIsActive(true);
+        return trainer;
+    }
+
+    public TrainerResponse mapTrainerResponse(Trainer trainer){
+        TrainerResponse response = new TrainerResponse();
+        response.setFirstName(trainer.getFirstName());
+        response.setLastName(trainer.getLastName());
+        response.setSpecialization(trainer.getSpecialization().getName().name());
         return response;
     }
 

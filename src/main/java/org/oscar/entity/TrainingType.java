@@ -18,5 +18,6 @@ public class TrainingType {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Enumerated(EnumType.STRING)
+    @Column(name = "name")
     private TypeTraining name;
 }

@@ -1,8 +1,11 @@
 package org.oscar;
 
 import org.oscar.dtos.TraineeDTO;
+import org.oscar.dtos.TrainerDTO;
 import org.oscar.entity.Trainee;
+import org.oscar.entity.TrainingType;
 import org.oscar.service.TraineeService;
+import org.oscar.service.TrainerSercice;
 import org.oscar.utils.Mapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -19,10 +22,9 @@ public class App {
         ApplicationContext contex = new AnnotationConfigApplicationContext(App.class);
 
         TraineeDTO dto = new TraineeDTO("Oscar","Obando", LocalDate.parse("1991-03-30"),"calle falsa 123");
-        Trainee trainee= contex.getBean(Mapper.class).mapTrainee(dto);
-
 
         contex.getBean(TraineeService.class).saveTrainee(dto);
+
         TraineeDTO dto2 = new TraineeDTO("Oscar","Obando", LocalDate.parse("1991-03-30"),"calle falsa");
         contex.getBean(TraineeService.class).saveTrainee(dto2);
 
@@ -35,6 +37,9 @@ public class App {
 
         TraineeDTO dto4 = new TraineeDTO("Pepe","Pepito", LocalDate.parse("1991-03-30"),"ver si funciona");
         System.out.println(contex.getBean(TraineeService.class).updateTrainee(dto4,3));
+
+//        TrainerDTO dtoTrainer = new TrainerDTO("Arnold", "EldeLasPeliculas", "LIFTING");
+//        contex.getBean(TrainerSercice.class).saveTrainer(dtoTrainer);
 
 
 

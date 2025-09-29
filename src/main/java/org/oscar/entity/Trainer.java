@@ -18,7 +18,8 @@ public class Trainer extends User{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "training_type_id")
     private TrainingType specialization;
 
     @Override

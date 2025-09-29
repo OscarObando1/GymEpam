@@ -85,13 +85,13 @@ public class TraineeRepositoryImp implements TraineeRepository {
             trainee = (Trainee) entityManager.createQuery(jpql, User.class)
                     .setParameter("username", username )
                     .getSingleResult();
-            if(trainee!=null){
                 entityManager.getTransaction().begin();
                 entityManager.remove(trainee);
                 entityManager.getTransaction().commit();
-            }
         }catch (Exception e){
-            entityManager.getTransaction().rollback();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
             System.out.println("Does not found trainee with this username");
         }
     }
