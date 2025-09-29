@@ -1,8 +1,12 @@
 package org.oscar.dtos;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import org.oscar.entity.TrainingType;
 
+@Setter
+@Getter
 public class TrainerDTO {
     private String firstName;
     private String lastName;
@@ -17,27 +21,4 @@ public class TrainerDTO {
         this.specialization = specialization;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public TrainingType getSpecialization() {
-        return specialization;
-    }
-
-    public void setSpecialization(TrainingType specialization) {
-        this.specialization = specialization;
-    }
 }
