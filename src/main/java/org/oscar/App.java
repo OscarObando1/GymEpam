@@ -4,6 +4,7 @@ import org.oscar.dtos.TraineeDTO;
 import org.oscar.dtos.TrainerDTO;
 import org.oscar.entity.Trainee;
 import org.oscar.entity.TrainingType;
+import org.oscar.enums.TypeTraining;
 import org.oscar.service.TraineeService;
 import org.oscar.service.TrainerSercice;
 import org.oscar.utils.Mapper;
@@ -38,8 +39,8 @@ public class App {
         TraineeDTO dto4 = new TraineeDTO("Pepe","Pepito", LocalDate.parse("1991-03-30"),"ver si funciona");
         System.out.println(contex.getBean(TraineeService.class).updateTrainee(dto4,3));
 
-//        TrainerDTO dtoTrainer = new TrainerDTO("Arnold", "EldeLasPeliculas", "LIFTING");
-//        contex.getBean(TrainerSercice.class).saveTrainer(dtoTrainer);
+        TrainerDTO dtoTrainer = new TrainerDTO("Arnold", "EldeLasPeliculas", TypeTraining.valueOf("LIFTING"));
+        contex.getBean(TrainerSercice.class).saveTrainer(dtoTrainer);
 
 
 

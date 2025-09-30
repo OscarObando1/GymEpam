@@ -5,9 +5,7 @@ import jakarta.persistence.EntityManager;
 
 import org.oscar.dtos.TrainerDTO;
 
-
 import org.oscar.entity.Trainer;
-
 import org.oscar.entity.TrainingType;
 import org.oscar.enums.TypeTraining;
 import org.oscar.utils.IGenerator;
@@ -29,20 +27,25 @@ public class TrainerRepositoryImp  implements TrainerRepository{
 
     @Override
     public Trainer saveEntity(TrainerDTO dto) {
+
+        TrainingType type = null;
+        String jpql = "SELECT t FROM TrainingType t WHERE t.name = :name";
+
+
+        type = entityManager.createQuery(jpql, TrainingType.class)
+                .setParameter("name", dto.getSpecialization())
+                .getSingleResult();
+        System.out.println(type);
+
         Trainer trainer = mapper.mapTrainer(dto);
         trainer.setUsername(generator.createUser(dto.getFirstName(), dto.getLastName()));
         trainer.setPassword(generator.generatePass());
-        TrainingType trainingType = new TrainingType();
-        trainingType.setName(TypeTraining.valueOf(dto.getSpecialization()));
-        trainer.setSpecialization(trainingType);
-        try {
+        trainer.setSpecialization(type);
+
             entityManager.getTransaction().begin();
             entityManager.persist(trainer);
             entityManager.getTransaction().commit();
-        }catch (Exception e){
-            entityManager.getTransaction().rollback();
-            e.printStackTrace();
-        }
+
         return trainer;
     }
 

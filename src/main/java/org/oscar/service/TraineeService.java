@@ -26,9 +26,9 @@ public class TraineeService  {
 
     public TraineeResponse findTrainee(String username){
         Trainee trainee = repository.findEntity(username);
-        if(trainee==null){
-            throw new NoSuchElementException("Does not found trainee with this username");
-        }
+            if(trainee==null){
+                throw new NoSuchElementException("Does not found trainee with this username");
+            }
         return mapper.mapTraineeResponse(trainee);
     }
 

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.oscar.enums.TypeTraining;
 
+import java.util.List;
+
 @Entity
 @Table(name = "training_type")
 @Getter
@@ -20,4 +22,7 @@ public class TrainingType {
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
     private TypeTraining name;
+
+    @OneToMany(mappedBy = "specialization")
+    private List<Trainer> trainers;
 }

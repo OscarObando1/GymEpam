@@ -41,17 +41,13 @@ public class TraineeRepositoryImp implements TraineeRepository {
     @Override
     public Trainee findEntity(String username) {
         Trainee trainee = null;
-        String jpql = "SELECT u FROM User u WHERE u.username = :username";
         try {
-
+            String jpql = "SELECT u FROM User u WHERE u.username = :username";
             trainee = (Trainee) entityManager.createQuery(jpql, User.class)
-                    .setParameter("username", username )
+                    .setParameter("username", username)
                     .getSingleResult();
-            if(trainee!=null){
-                return trainee;
-            }
         }catch (Exception e){
-            System.out.println("Does not found trainee with this username");
+            e.printStackTrace();
         }
         return trainee;
     }
