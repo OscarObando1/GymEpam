@@ -4,11 +4,13 @@ import org.oscar.dtos.TraineeDTO;
 import org.oscar.entity.Trainee;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public interface TraineeRepository {
     Trainee saveEntity(TraineeDTO dto);
     Trainee findEntity(String username );
-    Trainee updateEntity(TraineeDTO dto,long id);
+    Trainee updateEntity(TraineeDTO dto, long id);
     void deleteEntity(String username);
 
 

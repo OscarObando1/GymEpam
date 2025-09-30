@@ -1,5 +1,6 @@
 package org.oscar.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.oscar.dtos.TraineeDTO;
 import org.oscar.dtos.response.TraineeResponse;
 import org.oscar.entity.Trainee;
@@ -8,6 +9,7 @@ import org.oscar.utils.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Component
 public class TraineeService  {
@@ -26,15 +28,19 @@ public class TraineeService  {
 
     public TraineeResponse findTrainee(String username){
         Trainee trainee = repository.findEntity(username);
-        if(trainee==null){
-            throw new NoSuchElementException("Does not found trainee with this username");
-        }
+            if(trainee==null){
+                throw new NoSuchElementException("Does not found trainee with this username");
+            }
         return mapper.mapTraineeResponse(trainee);
     }
 
-    public TraineeResponse updateTrainee(TraineeDTO traineeDTO,long id){
-        Trainee trainee = repository.updateEntity(traineeDTO, id);
-        return mapper.mapTraineeResponse(trainee);
+    public TraineeResponse updateTrainee(TraineeDTO traineeDTO, long id) {
+        try {
+            Trainee trainee = repository.updateEntity(traineeDTO, id);
+            return mapper.mapTraineeResponse(trainee);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Trainee not found with id " + id);
+        }
     }
 
     public void deleteTrainee(String username){

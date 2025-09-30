@@ -17,7 +17,7 @@ import java.util.Objects;
 @Table(name = "user")
 public abstract class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long  id;
     @Column(name = "first_name",nullable = false)
     protected String firstName;

@@ -11,12 +11,12 @@ import org.oscar.enums.TypeTraining;
 public class TrainerDTO {
     private String firstName;
     private String lastName;
-    private String specialization;
+    private TypeTraining specialization;
 
     public TrainerDTO() {
     }
 
-    public TrainerDTO(String firstName, String lastName, String specialization) {
+    public TrainerDTO(String firstName, String lastName, TypeTraining specialization) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.specialization = specialization;

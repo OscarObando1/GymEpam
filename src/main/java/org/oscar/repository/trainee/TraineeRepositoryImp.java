@@ -1,12 +1,15 @@
 package org.oscar.repository.trainee;
 
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.oscar.dtos.TraineeDTO;
 import org.oscar.entity.Trainee;
 import org.oscar.entity.User;
 import org.oscar.utils.IGenerator;
 import org.oscar.utils.Mapper;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 
 @Component
@@ -31,9 +34,8 @@ public class TraineeRepositoryImp implements TraineeRepository {
             entityManager.getTransaction().begin();
             entityManager.persist(trainee);
             entityManager.getTransaction().commit();
-        }catch (Exception e){
-            entityManager.getTransaction().rollback();
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return trainee;
     }
@@ -41,17 +43,13 @@ public class TraineeRepositoryImp implements TraineeRepository {
     @Override
     public Trainee findEntity(String username) {
         Trainee trainee = null;
-        String jpql = "SELECT u FROM User u WHERE u.username = :username";
         try {
-
+            String jpql = "SELECT u FROM User u WHERE u.username = :username";
             trainee = (Trainee) entityManager.createQuery(jpql, User.class)
-                    .setParameter("username", username )
+                    .setParameter("username", username)
                     .getSingleResult();
-            if(trainee!=null){
-                return trainee;
-            }
         }catch (Exception e){
-            System.out.println("Does not found trainee with this username");
+            e.printStackTrace();
         }
         return trainee;
     }
@@ -71,7 +69,10 @@ public class TraineeRepositoryImp implements TraineeRepository {
             entityManager.getTransaction().commit();
 
         }catch (Exception e){
-            entityManager.getTransaction().rollback();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
         }
           return trainee;
     }
