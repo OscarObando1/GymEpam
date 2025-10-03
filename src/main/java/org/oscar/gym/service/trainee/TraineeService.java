@@ -1,4 +1,4 @@
-package org.oscar.gym.service;
+package org.oscar.gym.service.trainee;
 
 import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.response.TraineeResponse;
@@ -8,7 +8,7 @@ import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TraineeService  {
+public class TraineeService implements ITraineeService  {
 
     private final TraineeRepository repository;
     private final Mapper mapper;

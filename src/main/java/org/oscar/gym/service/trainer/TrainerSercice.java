@@ -1,4 +1,4 @@
-package org.oscar.gym.service;
+package org.oscar.gym.service.trainer;
 
 
 import org.oscar.gym.dtos.TrainerDTO;

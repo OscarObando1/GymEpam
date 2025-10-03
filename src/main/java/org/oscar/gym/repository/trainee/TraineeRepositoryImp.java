@@ -50,6 +50,7 @@ public class TraineeRepositoryImp implements TraineeRepository {
     }
 
     @Override
+    @Transactional
     public Trainee updateEntity(TraineeDTO dto, long id) {
         Trainee trainee = null;
         trainee = entityManager.find(Trainee.class,id);
@@ -62,20 +63,17 @@ public class TraineeRepositoryImp implements TraineeRepository {
             trainee.setUsername(generator.createUser(dto.getFirstName(),dto.getLastName()));
             trainee.setAddress(dto.getAddress());
             trainee.setDateOfBirth(dto.getDateOfBirth());
-            entityManager.getTransaction().begin();
             entityManager.merge(trainee);
-            entityManager.getTransaction().commit();
+
 
         }catch (Exception e){
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
             e.printStackTrace();
         }
           return trainee;
     }
 
     @Override
+    @Transactional
     public void deleteEntity(String username) {
         Trainee trainee = null;
         String jpql = "SELECT u FROM User u WHERE u.username = :username";
@@ -84,13 +82,8 @@ public class TraineeRepositoryImp implements TraineeRepository {
             trainee = (Trainee) entityManager.createQuery(jpql, User.class)
                     .setParameter("username", username )
                     .getSingleResult();
-                entityManager.getTransaction().begin();
                 entityManager.remove(trainee);
-                entityManager.getTransaction().commit();
         }catch (Exception e){
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
             System.out.println("Does not found trainee with this username");
         }
     }
