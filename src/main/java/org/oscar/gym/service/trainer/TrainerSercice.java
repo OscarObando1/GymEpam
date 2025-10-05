@@ -1,10 +1,12 @@
 package org.oscar.gym.service.trainer;
 
 
+import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.response.TrainerResponse;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.repository.trainer.TrainerRepository;
+import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +16,13 @@ import java.util.NoSuchElementException;
 public class TrainerSercice implements ITrainerService{
     private final TrainerRepository repository;
     private final Mapper mapper;
+    private final IAuthenticator authenticator;
 
 
-    public TrainerSercice(TrainerRepository repository, Mapper mapper) {
+    public TrainerSercice(TrainerRepository repository, Mapper mapper, IAuthenticator authenticator) {
         this.repository = repository;
         this.mapper = mapper;
+        this.authenticator = authenticator;
     }
 
     @Override
@@ -26,7 +30,10 @@ public class TrainerSercice implements ITrainerService{
         repository.saveEntity(dto);
     }
 
-    public TrainerResponse findTrainer(String username){
+    public TrainerResponse findTrainer(LoginDTO dto, String username){
+        if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
+            throw new UnsupportedOperationException("Sorry user not authorized");
+        }
         Trainer trainer = repository.findEntity(username);
         if(trainer==null){
             throw new NoSuchElementException("Does not found trainer with this username");
@@ -34,7 +41,10 @@ public class TrainerSercice implements ITrainerService{
         return mapper.mapTrainerResponse(trainer);
     }
     @Override
-    public TrainerResponse updateTrainer(TrainerDTO trainerDTO, long id) {
+    public TrainerResponse updateTrainer(LoginDTO dto,TrainerDTO trainerDTO, long id) {
+        if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
+            throw new UnsupportedOperationException("Sorry user not authorized");
+        }
         try {
             Trainer trainer = repository.updateEntity(trainerDTO, id);
             return mapper.mapTrainerResponse(trainer);
@@ -45,12 +55,15 @@ public class TrainerSercice implements ITrainerService{
     }
 
     @Override
-    public void deleteTrainer(String username){
+    public void deleteTrainer(LoginDTO dto,String username){
+        if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
+            throw new UnsupportedOperationException("Sorry user not authorized");
+        }
         repository.deleteEntity(username);
     }
 
     @Override
-    public void assignTrainee(String userTrainer, String userTrainee){
+    public void assignTrainee(LoginDTO dto,String userTrainer, String userTrainee){
         repository.assignTraineeEntity(userTrainer,userTrainee);
     }
 }

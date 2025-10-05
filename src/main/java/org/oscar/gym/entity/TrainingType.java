@@ -22,5 +22,5 @@ public class TrainingType {
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
     private TypeTraining name;
-    
+
 }

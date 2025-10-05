@@ -1,6 +1,8 @@
 package org.oscar.gym.controller;
 
+import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
+import org.oscar.gym.dtos.request.RequestTrainer;
 import org.oscar.gym.dtos.response.TrainerResponse;
 import org.oscar.gym.service.trainer.ITrainerService;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +17,8 @@ public class TrainerController {
     }
 
     @GetMapping("/trainer")
-    public TrainerResponse getTrainer(@RequestParam String username){
-        return service.findTrainer(username);
+    public TrainerResponse getTrainer(@RequestBody LoginDTO dto,@RequestParam String username){
+        return service.findTrainer(dto,username);
     }
 
     @PostMapping("/trainer")
@@ -25,12 +27,12 @@ public class TrainerController {
     }
 
     @PutMapping("/trainer/{id}")
-    public TrainerResponse updateTrainer(@RequestBody TrainerDTO dto, @PathVariable long id){
-        return service.updateTrainer(dto,id);
+    public TrainerResponse updateTrainer(@RequestBody RequestTrainer dto, @PathVariable long id){
+        return service.updateTrainer(dto.getLoginDTO(),dto.getTrainerDTO(),id);
     }
 
     @DeleteMapping("/trainer")
-    public void deleteTrainer(@RequestParam String username){
-        service.deleteTrainer(username);
+    public void deleteTrainer(@RequestBody LoginDTO dto,@RequestParam String username){
+        service.deleteTrainer(dto,username);
     }
 }
