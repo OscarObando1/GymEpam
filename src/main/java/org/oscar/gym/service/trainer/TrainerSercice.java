@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.NoSuchElementException;
 
 @Component
-public class TrainerSercice{
+public class TrainerSercice implements ITrainerService{
     private final TrainerRepository repository;
     private final Mapper mapper;
 
@@ -21,6 +21,7 @@ public class TrainerSercice{
         this.mapper = mapper;
     }
 
+    @Override
     public void saveTrainer(TrainerDTO dto){
         repository.saveEntity(dto);
     }
@@ -32,7 +33,7 @@ public class TrainerSercice{
         }
         return mapper.mapTrainerResponse(trainer);
     }
-
+    @Override
     public TrainerResponse updateTrainer(TrainerDTO trainerDTO, long id) {
         try {
             Trainer trainer = repository.updateEntity(trainerDTO, id);
@@ -43,11 +44,13 @@ public class TrainerSercice{
         return null;
     }
 
+    @Override
     public void deleteTrainer(String username){
         repository.deleteEntity(username);
     }
 
-    public void asignTrainee(String userTrainer, String userTrainee){
+    @Override
+    public void assignTrainee(String userTrainer, String userTrainee){
         repository.assignTraineeEntity(userTrainer,userTrainee);
     }
 }

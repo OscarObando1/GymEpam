@@ -3,6 +3,7 @@ package org.oscar.gym.repository.trainer;
 import jakarta.persistence.EntityManager;
 
 
+import jakarta.transaction.Transactional;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
@@ -26,6 +27,7 @@ public class TrainerRepositoryImp  implements TrainerRepository{
 
 
     @Override
+    @Transactional
     public Trainer saveEntity(TrainerDTO dto) {
         System.out.println("Specialization: " + dto.getSpecialization());
 
@@ -43,10 +45,8 @@ public class TrainerRepositoryImp  implements TrainerRepository{
         trainer.setPassword(generator.generatePass());
         trainer.setSpecialization(type);
 
-            entityManager.getTransaction().begin();
-            entityManager.persist(trainer);
-            entityManager.getTransaction().commit();
 
+            entityManager.persist(trainer);
         return trainer;
     }
 
@@ -65,6 +65,7 @@ public class TrainerRepositoryImp  implements TrainerRepository{
     }
 
     @Override
+    @Transactional
     public Trainer updateEntity(TrainerDTO dto, long id) {
         Trainer trainer = null;
         trainer = entityManager.find(Trainer.class,id);
@@ -75,20 +76,15 @@ public class TrainerRepositoryImp  implements TrainerRepository{
             trainer.setFirstName(dto.getFirstName());
             trainer.setLastName(dto.getLastName());
             trainer.setUsername(generator.createUser(dto.getFirstName(),dto.getLastName()));
-            entityManager.getTransaction().begin();
             entityManager.merge(trainer);
-            entityManager.getTransaction().commit();
-
         }catch (Exception e){
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
+            System.out.println("Trainer not found");
         }
         return trainer;
     }
 
     @Override
+    @Transactional
     public void deleteEntity(String username) {
         Trainer trainer = null;
         String jpql = "SELECT u FROM User u WHERE u.username = :username";
@@ -97,38 +93,40 @@ public class TrainerRepositoryImp  implements TrainerRepository{
             trainer = (Trainer) entityManager.createQuery(jpql, User.class)
                     .setParameter("username", username )
                     .getSingleResult();
-            entityManager.getTransaction().begin();
             entityManager.remove(trainer);
-            entityManager.getTransaction().commit();
         }catch (Exception e){
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
             System.out.println("Does not found trainer with this username");
         }
 
     }
 
     @Override
+    @Transactional
     public void assignTraineeEntity(String userTrainer,String userTrainee){
         Trainer trainer = null;
         String jpql = "SELECT u FROM User u WHERE u.username = :username";
 
+        try {
             trainer = (Trainer) entityManager.createQuery(jpql, User.class)
                     .setParameter("username", userTrainer )
                     .getSingleResult();
+        } catch (Exception e) {
+            System.out.println("trainer not found");
+        }
         Trainee trainee = null;
-        String jpql2 = "SELECT u FROM User u WHERE u.username = :username";
+        try {
+            String jpql2 = "SELECT u FROM User u WHERE u.username = :username";
             trainee = (Trainee) entityManager.createQuery(jpql, User.class)
                     .setParameter("username", userTrainee )
                     .getSingleResult();
+        } catch (Exception e) {
+            System.out.println("trainee not found");
+        }
 
         trainer.getTrainees().add(trainee);
         trainee.getTrainers().add(trainer);
-        entityManager.getTransaction().begin();
         entityManager.merge(trainer);
         entityManager.merge(trainee);
-        entityManager.getTransaction().commit();
 
     }
 }
