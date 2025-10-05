@@ -18,7 +18,7 @@ import java.util.Objects;
 @Table(name = "trainer")
 public class Trainer extends User{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "training_type_id")
@@ -31,6 +31,9 @@ public class Trainer extends User{
             inverseJoinColumns = @JoinColumn(name = "trainee_id")
     )
     private List<Trainee> trainees = new ArrayList<>();
+
+    @OneToMany(mappedBy = "trainerId")
+    private List<Training> trainings = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

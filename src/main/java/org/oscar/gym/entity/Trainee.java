@@ -20,13 +20,16 @@ import java.util.Objects;
 @Table(name = "trainee")
 public class Trainee extends User{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String address;
     private LocalDate dateOfBirth;
 
     @ManyToMany(mappedBy = "trainees")
     private List<Trainer> trainers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "traineeId")
+    private List<Training> trainings = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

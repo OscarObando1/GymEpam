@@ -17,15 +17,22 @@ import java.util.Objects;
 @Table(name = "training")
 public class Training {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    @Transient
-    private Long trainerId;
-    @Transient
-    private Long traineeId;
+
+    @ManyToOne
+    @JoinColumn(name = "trainer_id")
+    private Trainer trainerId;
+
+    @ManyToOne
+    @JoinColumn(name = "trainee_id")
+    private Trainee traineeId;
     private String name;
-    @Transient
+
+    @ManyToOne
+    @JoinColumn(name = "training_type_id")
     private TrainingType trainingType;
+
     private LocalDate trainingDate;
     private Integer durationTraining;
 

@@ -17,12 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 public class TrainingType {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
     private TypeTraining name;
-
-    @OneToMany(mappedBy = "specialization")
-    private List<Trainer> trainers;
+    
 }
