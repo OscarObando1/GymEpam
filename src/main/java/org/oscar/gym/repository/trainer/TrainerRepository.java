@@ -1,6 +1,7 @@
 package org.oscar.gym.repository.trainer;
 
 import org.oscar.gym.dtos.TrainerDTO;
+import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.springframework.stereotype.Component;
 
@@ -11,4 +12,5 @@ public interface TrainerRepository {
     Trainer updateEntity(TrainerDTO dto, long id);
     void deleteEntity(String username);
     void assignTraineeEntity(String userTrainer,String userTrainee);
+    Trainer changeActive(long id);
 }

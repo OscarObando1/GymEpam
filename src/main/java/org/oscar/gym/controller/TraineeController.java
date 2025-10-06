@@ -36,4 +36,9 @@ public class TraineeController {
     public void deleteTrainee(@RequestBody LoginDTO dto, @RequestParam String username){
         traineeService.deleteTrainee(dto,username);
     }
+
+    @PostMapping("/trainee/update/{id}")
+    public TraineeResponse updateActiveTrainee(@PathVariable long id){
+        return traineeService.activeOrDeactivateTraine(id);
+    }
 }

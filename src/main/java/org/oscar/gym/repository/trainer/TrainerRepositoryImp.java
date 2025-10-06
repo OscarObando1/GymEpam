@@ -129,4 +129,24 @@ public class TrainerRepositoryImp  implements TrainerRepository{
         entityManager.merge(trainee);
 
     }
+
+    @Override
+    public Trainer changeActive(long id) {
+        Trainer trainer = null;
+        trainer = entityManager.find(Trainer.class,id);
+        if(trainer==null){
+            throw new RuntimeException("Not Found");
+        }
+        try {
+            if(trainer.getIsActive()){
+                trainer.setIsActive(false);
+            }else {
+                trainer.setIsActive(true);
+            }
+            entityManager.merge(trainer);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return trainer;
+    }
 }

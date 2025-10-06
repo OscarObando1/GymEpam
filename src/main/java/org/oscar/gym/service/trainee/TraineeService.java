@@ -60,5 +60,16 @@ public class TraineeService implements ITraineeService  {
         repository.deleteEntity(username);
     }
 
+    @Override
+    public TraineeResponse activeOrDeactivateTraine(long id) {
+        try {
+            Trainee trainee = repository.changeActive(id);
+            return mapper.mapTraineeResponse(trainee);
+        } catch (Exception e) {
+            System.out.println("Trainee not found with id " + id);
+        }
+        return null;
+    }
+
 
 }

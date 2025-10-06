@@ -88,5 +88,27 @@ public class TraineeRepositoryImp implements TraineeRepository {
         }
     }
 
+    @Override
+    @Transactional
+    public Trainee changeActive(long id) {
+        Trainee trainee = null;
+        trainee = entityManager.find(Trainee.class,id);
+        if(trainee==null){
+            throw new RuntimeException("Not Found");
+        }
+        try {
+           if(trainee.getIsActive()){
+               trainee.setIsActive(false);
+           }else {
+               trainee.setIsActive(true);
+           }
+            entityManager.merge(trainee);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return trainee;
+
+    }
+
 
 }

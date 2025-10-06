@@ -11,6 +11,7 @@ public interface TraineeRepository {
     Trainee findEntity(String username );
     Trainee updateEntity(TraineeDTO dto, long id);
     void deleteEntity(String username);
+    Trainee changeActive(long id);
 
 
 }

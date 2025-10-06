@@ -4,6 +4,7 @@ package org.oscar.gym.service.trainer;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.response.TrainerResponse;
+import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.oscar.gym.security.IAuthenticator;
@@ -65,5 +66,16 @@ public class TrainerSercice implements ITrainerService{
     @Override
     public void assignTrainee(LoginDTO dto,String userTrainer, String userTrainee){
         repository.assignTraineeEntity(userTrainer,userTrainee);
+    }
+
+    @Override
+    public TrainerResponse activeOrDeactivateTrainer(long id) {
+        try {
+            Trainer trainer = repository.changeActive(id);
+            return mapper.mapTrainerResponse(trainer);
+        } catch (Exception e) {
+            System.out.println("Trainer not found with id " + id);
+        }
+        return null;
     }
 }
