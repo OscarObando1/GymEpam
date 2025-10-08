@@ -22,11 +22,11 @@ public class Training {
 
     @ManyToOne
     @JoinColumn(name = "trainer_id")
-    private Trainer trainerId;
+    private Trainer trainer;
 
     @ManyToOne
     @JoinColumn(name = "trainee_id")
-    private Trainee traineeId;
+    private Trainee trainee;
     private String name;
 
     @ManyToOne
@@ -41,11 +41,11 @@ public class Training {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Training training = (Training) o;
-        return Objects.equals(Id, training.Id) && Objects.equals(trainerId, training.trainerId) && Objects.equals(traineeId, training.traineeId) && Objects.equals(name, training.name) && Objects.equals(trainingType, training.trainingType) && Objects.equals(trainingDate, training.trainingDate) && Objects.equals(durationTraining, training.durationTraining);
+        return Objects.equals(Id, training.Id) && Objects.equals(trainer, training.trainer) && Objects.equals(trainee, training.trainee) && Objects.equals(name, training.name) && Objects.equals(trainingType, training.trainingType) && Objects.equals(trainingDate, training.trainingDate) && Objects.equals(durationTraining, training.durationTraining);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, trainerId, traineeId, name, trainingType, trainingDate, durationTraining);
+        return Objects.hash(Id, trainer, trainee, name, trainingType, trainingDate, durationTraining);
     }
 }

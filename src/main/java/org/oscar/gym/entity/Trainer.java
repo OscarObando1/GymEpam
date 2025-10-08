@@ -32,7 +32,7 @@ public class Trainer extends User{
     )
     private List<Trainee> trainees = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trainerId")
+    @OneToMany(mappedBy = "trainer")
     private List<Training> trainings = new ArrayList<>();
 
     @Override

@@ -28,7 +28,7 @@ public class Trainee extends User{
     @ManyToMany(mappedBy = "trainees")
     private List<Trainer> trainers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "traineeId")
+    @OneToMany(mappedBy = "trainee")
     private List<Training> trainings = new ArrayList<>();
 
     @Override
