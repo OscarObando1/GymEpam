@@ -3,6 +3,7 @@ package org.oscar.gym.repository.trainee;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.oscar.gym.dtos.ChangePassDTO;
 import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.User;
@@ -113,6 +114,17 @@ public class TraineeRepositoryImp implements TraineeRepository {
             log.debug("something happened during change activity");
         }
         return trainee;
+
+    }
+
+    @Override
+    @Transactional
+    public void updatePass(ChangePassDTO dto) {
+        Trainee trainee = null;
+        trainee= findEntity(dto.getUsername());
+        trainee.setPassword(dto.getNewPass());
+        entityManager.merge(trainee);
+
 
     }
 

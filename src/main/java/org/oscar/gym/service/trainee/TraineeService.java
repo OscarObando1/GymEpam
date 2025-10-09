@@ -1,6 +1,7 @@
 package org.oscar.gym.service.trainee;
 
 import lombok.extern.slf4j.Slf4j;
+import org.oscar.gym.dtos.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.response.TraineeResponse;
@@ -71,6 +72,14 @@ public class TraineeService implements ITraineeService  {
             log.info("Trainee not found with id " + id);
         }
         return null;
+    }
+
+    @Override
+    public void updatePassword(ChangePassDTO dto) {
+        if(!authenticator.isAuthorized(dto.getUsername(), dto.getOldPass())){
+            throw new UnsupportedOperationException("Sorry user not authorized");
+        }
+        repository.updatePass(dto);
     }
 
 

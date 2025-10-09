@@ -1,5 +1,6 @@
 package org.oscar.gym.controller;
 
+import org.oscar.gym.dtos.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.request.RequestTrainer;
@@ -37,8 +38,18 @@ public class TrainerController {
         service.deleteTrainer(dto,username);
     }
 
+    @PostMapping("/trainer/assign")
+    public void assignTrainee(@RequestBody LoginDTO dto,@RequestParam String userTrainer, @RequestParam String userTrainee){
+        service.assignTrainee(dto,userTrainer,userTrainee);
+    }
+
     @PostMapping("/trainer/update/{id}")
     public TrainerResponse updateActiveTrainee(@PathVariable long id){
         return service.activeOrDeactivateTrainer(id);
+    }
+
+    @PostMapping("trainer/change")
+    public void changePassword(@RequestBody ChangePassDTO dto){
+        service.updatePassword(dto);
     }
 }

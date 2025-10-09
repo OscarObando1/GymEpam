@@ -1,5 +1,6 @@
 package org.oscar.gym.service.trainer;
 
+import org.oscar.gym.dtos.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.response.TraineeResponse;
@@ -20,4 +21,6 @@ public interface ITrainerService {
     void assignTrainee(LoginDTO dto,String userTrainer, String userTrainee);
 
     TrainerResponse activeOrDeactivateTrainer(long id);
+
+    void updatePassword(ChangePassDTO dto);
 }

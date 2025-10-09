@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.oscar.gym.dtos.ChangePassDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
@@ -154,5 +155,14 @@ public class TrainerRepositoryImp  implements TrainerRepository{
             e.printStackTrace();
         }
         return trainer;
+    }
+
+    @Override
+    @Transactional
+    public void updatePass(ChangePassDTO dto) {
+        Trainer trainer = null;
+        trainer= findEntity(dto.getUsername());
+        trainer.setPassword(dto.getNewPass());
+        entityManager.merge(trainer);
     }
 }

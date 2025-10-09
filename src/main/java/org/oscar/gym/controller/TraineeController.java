@@ -1,5 +1,6 @@
 package org.oscar.gym.controller;
 
+import org.oscar.gym.dtos.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.request.RequestTrainee;
@@ -40,5 +41,10 @@ public class TraineeController {
     @PostMapping("/trainee/update/{id}")
     public TraineeResponse updateActiveTrainee(@PathVariable long id){
         return traineeService.activeOrDeactivateTraine(id);
+    }
+
+    @PostMapping("trainee/change")
+    public void changePassword(@RequestBody ChangePassDTO dto){
+        traineeService.updatePassword(dto);
     }
 }
