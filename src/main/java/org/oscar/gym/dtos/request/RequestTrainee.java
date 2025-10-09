@@ -7,5 +7,5 @@ import org.oscar.gym.dtos.TraineeDTO;
 @Getter
 public class RequestTrainee {
     private LoginDTO loginDTO;
-    private TraineeDTO TraineeDTO;
+    private TraineeDTO traineeDTO;
 }

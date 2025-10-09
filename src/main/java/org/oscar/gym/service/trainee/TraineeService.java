@@ -1,5 +1,6 @@
 package org.oscar.gym.service.trainee;
 
+import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.response.TraineeResponse;
@@ -9,6 +10,7 @@ import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class TraineeService implements ITraineeService  {
 
@@ -34,7 +36,7 @@ public class TraineeService implements ITraineeService  {
             Trainee trainee = repository.findEntity(username);
             return mapper.mapTraineeResponse(trainee);
         }catch (Exception e) {
-            System.out.println("Does not found trainee with this username");
+            log.info("Does not found trainee with this username "+username);
             }
         return null;
 
@@ -48,7 +50,7 @@ public class TraineeService implements ITraineeService  {
             Trainee trainee = repository.updateEntity(traineeDTO, id);
             return mapper.mapTraineeResponse(trainee);
         } catch (Exception e) {
-            System.out.println("Trainee not found with id " + id);
+            log.info("Trainee not found with id " + id);
         }
         return null;
     }
@@ -66,7 +68,7 @@ public class TraineeService implements ITraineeService  {
             Trainee trainee = repository.changeActive(id);
             return mapper.mapTraineeResponse(trainee);
         } catch (Exception e) {
-            System.out.println("Trainee not found with id " + id);
+            log.info("Trainee not found with id " + id);
         }
         return null;
     }

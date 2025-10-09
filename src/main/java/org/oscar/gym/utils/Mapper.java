@@ -27,6 +27,7 @@ public class Mapper {
         TraineeResponse response = new TraineeResponse();
         response.setFirstName(trainee.getFirstName());
         response.setLastName(trainee.getLastName());
+        response.setUsername(trainee.getUsername());
         return response;
     }
 
