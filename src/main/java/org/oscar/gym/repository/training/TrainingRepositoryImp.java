@@ -2,6 +2,7 @@ package org.oscar.gym.repository.training;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.TrainingDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Component
 public class TrainingRepositoryImp implements TrainingRepository{
 
@@ -33,13 +35,13 @@ public class TrainingRepositoryImp implements TrainingRepository{
         try {
             trainer=trainerRepository.findEntity(dto.getTrainerUsername());
         }catch (Exception e){
-            throw new NoSuchElementException("trainer no encontrado user"+dto.getTrainerUsername());
+            throw new NoSuchElementException("trainer not found with the user "+dto.getTrainerUsername());
         }
         Trainee trainee =null;
         try {
             trainee=traineeRepository.findEntity(dto.getTraineeUsername());
         }catch (Exception e){
-            throw new NoSuchElementException("trainee no encontrado");
+            throw new NoSuchElementException("trainee not found with the user " +dto.getTraineeUsername());
         }
 
         Training training = new Training();
@@ -50,6 +52,6 @@ public class TrainingRepositoryImp implements TrainingRepository{
         training.setTrainingDate(dto.getDate());
         training.setDurationTraining(dto.getDuration());
         entityManager.persist(training);
-
+        log.info("training was created");
     }
 }

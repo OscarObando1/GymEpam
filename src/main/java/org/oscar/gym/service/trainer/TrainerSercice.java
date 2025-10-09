@@ -1,6 +1,7 @@
 package org.oscar.gym.service.trainer;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.response.TrainerResponse;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Component
 public class TrainerSercice implements ITrainerService{
     private final TrainerRepository repository;
@@ -35,11 +37,14 @@ public class TrainerSercice implements ITrainerService{
         if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
             throw new UnsupportedOperationException("Sorry user not authorized");
         }
-        Trainer trainer = repository.findEntity(username);
-        if(trainer==null){
-            throw new NoSuchElementException("Does not found trainer with this username");
-        }
-        return mapper.mapTrainerResponse(trainer);
+         try {
+                    Trainer trainer = repository.findEntity(username);
+                    return mapper.mapTrainerResponse(trainer);
+                }catch (Exception e) {
+                    log.info("Does not found trainer with this username "+username);
+                    }
+                return null;
+
     }
     @Override
     public TrainerResponse updateTrainer(LoginDTO dto,TrainerDTO trainerDTO, long id) {
@@ -50,7 +55,7 @@ public class TrainerSercice implements ITrainerService{
             Trainer trainer = repository.updateEntity(trainerDTO, id);
             return mapper.mapTrainerResponse(trainer);
         } catch (Exception e) {
-            System.out.println("Trainer not found with id " + id);
+            log.info("Trainer not found with id " + id);
         }
         return null;
     }
@@ -74,7 +79,7 @@ public class TrainerSercice implements ITrainerService{
             Trainer trainer = repository.changeActive(id);
             return mapper.mapTrainerResponse(trainer);
         } catch (Exception e) {
-            System.out.println("Trainer not found with id " + id);
+            log.info("Trainer not found with id " + id);
         }
         return null;
     }

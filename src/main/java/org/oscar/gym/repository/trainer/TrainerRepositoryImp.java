@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
@@ -13,6 +14,7 @@ import org.oscar.gym.utils.IGenerator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class TrainerRepositoryImp  implements TrainerRepository{
     private final EntityManager entityManager;
@@ -29,8 +31,6 @@ public class TrainerRepositoryImp  implements TrainerRepository{
     @Override
     @Transactional
     public Trainer saveEntity(TrainerDTO dto) {
-        System.out.println("Specialization: " + dto.getSpecialization());
-
 
         TrainingType type = null;
         String jpql = "SELECT t FROM TrainingType t WHERE t.name = :name";
@@ -47,6 +47,7 @@ public class TrainerRepositoryImp  implements TrainerRepository{
 
 
             entityManager.persist(trainer);
+            log.info("Trainer saved "+trainer.getUsername());
         return trainer;
     }
 
@@ -59,7 +60,7 @@ public class TrainerRepositoryImp  implements TrainerRepository{
                     .setParameter("username", username)
                     .getSingleResult();
         }catch (Exception e){
-            e.printStackTrace();
+            log.info("trainee not found with this "+username);
         }
         return trainer;
     }
@@ -70,16 +71,18 @@ public class TrainerRepositoryImp  implements TrainerRepository{
         Trainer trainer = null;
         trainer = entityManager.find(Trainer.class,id);
         if(trainer==null){
-            throw new RuntimeException("Not Found");
+            throw new RuntimeException("Trainee not found with this id "+id);
         }
+        trainer.setFirstName(dto.getFirstName());
+        trainer.setLastName(dto.getLastName());
+        trainer.setUsername(generator.createUser(dto.getFirstName(),dto.getLastName()));
         try {
-            trainer.setFirstName(dto.getFirstName());
-            trainer.setLastName(dto.getLastName());
-            trainer.setUsername(generator.createUser(dto.getFirstName(),dto.getLastName()));
             entityManager.merge(trainer);
         }catch (Exception e){
-            System.out.println("Trainer not found");
+            e.printStackTrace();
+            log.debug("something during update happend");
         }
+        log.info("trainer updated");
         return trainer;
     }
 
@@ -94,8 +97,9 @@ public class TrainerRepositoryImp  implements TrainerRepository{
                     .setParameter("username", username )
                     .getSingleResult();
             entityManager.remove(trainer);
+            log.info("trainer deleted");
         }catch (Exception e){
-            System.out.println("Does not found trainer with this username");
+            log.info("Does not found trainer with this username "+username);
         }
 
     }
@@ -111,7 +115,7 @@ public class TrainerRepositoryImp  implements TrainerRepository{
                     .setParameter("username", userTrainer )
                     .getSingleResult();
         } catch (Exception e) {
-            System.out.println("trainer not found");
+            log.info("trainer not found with this username "+ userTrainer);
         }
         Trainee trainee = null;
         try {
@@ -120,14 +124,14 @@ public class TrainerRepositoryImp  implements TrainerRepository{
                     .setParameter("username", userTrainee )
                     .getSingleResult();
         } catch (Exception e) {
-            System.out.println("trainee not found");
+            log.info("trainee not found with this username "+userTrainee);
         }
 
         trainer.getTrainees().add(trainee);
         trainee.getTrainers().add(trainer);
         entityManager.merge(trainer);
         entityManager.merge(trainee);
-
+        log.info("The trainer "+trainer.getUsername()+ " selected the trainee " +trainee.getUsername());
     }
 
     @Override
@@ -135,13 +139,15 @@ public class TrainerRepositoryImp  implements TrainerRepository{
         Trainer trainer = null;
         trainer = entityManager.find(Trainer.class,id);
         if(trainer==null){
-            throw new RuntimeException("Not Found");
+            throw new RuntimeException("Not Found with this id "+id);
         }
         try {
             if(trainer.getIsActive()){
                 trainer.setIsActive(false);
+                log.info("trainer inactive");
             }else {
                 trainer.setIsActive(true);
+                log.info("trainer active");
             }
             entityManager.merge(trainer);
         }catch (Exception e){
