@@ -18,7 +18,7 @@ import java.util.Objects;
 public class Training {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "trainer_id")
@@ -41,11 +41,11 @@ public class Training {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Training training = (Training) o;
-        return Objects.equals(Id, training.Id) && Objects.equals(trainer, training.trainer) && Objects.equals(trainee, training.trainee) && Objects.equals(name, training.name) && Objects.equals(trainingType, training.trainingType) && Objects.equals(trainingDate, training.trainingDate) && Objects.equals(durationTraining, training.durationTraining);
+        return Objects.equals(id, training.id) && Objects.equals(trainer, training.trainer) && Objects.equals(trainee, training.trainee) && Objects.equals(name, training.name) && Objects.equals(trainingType, training.trainingType) && Objects.equals(trainingDate, training.trainingDate) && Objects.equals(durationTraining, training.durationTraining);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, trainer, trainee, name, trainingType, trainingDate, durationTraining);
+        return Objects.hash(id, trainer, trainee, name, trainingType, trainingDate, durationTraining);
     }
 }

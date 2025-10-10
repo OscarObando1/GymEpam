@@ -7,10 +7,12 @@ import org.oscar.gym.dtos.TrainingDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.Training;
+import org.oscar.gym.entity.User;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -53,5 +55,30 @@ public class TrainingRepositoryImp implements TrainingRepository{
         training.setDurationTraining(dto.getDuration());
         entityManager.persist(training);
         log.info("training was created");
+    }
+
+    @Override
+    public List<Training> getTraining(String username) {
+        Trainee trainee =null;
+        List<Training> list = null;
+        try {
+            trainee=traineeRepository.findEntity(username);
+        }catch (Exception e){
+            throw new NoSuchElementException("trainee not found with the user " +username);
+        }
+        long id = trainee.getId();
+
+        try {
+            String jpql = "SELECT t FROM Training t WHERE t.trainee.id = :id";
+            list = entityManager.createQuery(jpql, Training.class)
+                    .setParameter("id", id)
+                    .getResultList();
+
+        }catch (Exception e){
+            log.info("trainings not found with this "+username);
+        }
+
+
+        return list;
     }
 }

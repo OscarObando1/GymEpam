@@ -1,9 +1,5 @@
 package org.oscar.gym.dtos;
 
-
-
-
-
 import lombok.Getter;
 import lombok.Setter;
 
