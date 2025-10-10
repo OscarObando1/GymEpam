@@ -5,8 +5,10 @@ import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.response.TraineeResponse;
 import org.oscar.gym.dtos.response.TrainerResponse;
+import org.oscar.gym.dtos.response.TrainingResponse;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
+import org.oscar.gym.entity.Training;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -44,6 +46,15 @@ public class Mapper {
         response.setFirstName(trainer.getFirstName());
         response.setLastName(trainer.getLastName());
         response.setSpecialization(trainer.getSpecialization().getName().name());
+        return response;
+    }
+
+    public TrainingResponse mapTrainingResponse(Training training){
+        TrainingResponse response = new TrainingResponse();
+        response.setName(training.getName());
+        response.setTrainerUsername(training.getTrainer().getUsername());
+        response.setTraineeUsername(training.getTrainee().getUsername());
+        response.setType(training.getTrainingType().getName().toString());
         return response;
     }
 

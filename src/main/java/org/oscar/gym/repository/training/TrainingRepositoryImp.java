@@ -7,7 +7,6 @@ import org.oscar.gym.dtos.TrainingDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.Training;
-import org.oscar.gym.entity.User;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.springframework.stereotype.Component;
@@ -58,7 +57,7 @@ public class TrainingRepositoryImp implements TrainingRepository{
     }
 
     @Override
-    public List<Training> getTraining(String username) {
+    public List<Training> getTrainingWithTrainee(String username) {
         Trainee trainee =null;
         List<Training> list = null;
         try {
@@ -70,6 +69,32 @@ public class TrainingRepositoryImp implements TrainingRepository{
 
         try {
             String jpql = "SELECT t FROM Training t WHERE t.trainee.id = :id";
+            list = entityManager.createQuery(jpql, Training.class)
+                    .setParameter("id", id)
+                    .getResultList();
+
+        }catch (Exception e){
+            log.info("trainings not found with this "+username);
+        }
+
+
+        return list;
+    }
+
+    @Override
+    @Transactional
+    public List<Training> getTrainingWithTraineer(String username) {
+        Trainer trainer =null;
+        List<Training> list = null;
+        try {
+            trainer=trainerRepository.findEntity(username);
+        }catch (Exception e){
+            throw new NoSuchElementException("trainer not found with the user " +username);
+        }
+        long id = trainer.getId();
+
+        try {
+            String jpql = "SELECT t FROM Training t WHERE t.trainer.id = :id";
             list = entityManager.createQuery(jpql, Training.class)
                     .setParameter("id", id)
                     .getResultList();

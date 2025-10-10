@@ -9,5 +9,6 @@ import java.util.List;
 @Component
 public interface TrainingRepository {
     public void createTraining(TrainingDTO dto);
-    public List<Training> getTraining(String username);
+    public List<Training> getTrainingWithTrainee(String username);
+    public List<Training> getTrainingWithTraineer(String username);
 }

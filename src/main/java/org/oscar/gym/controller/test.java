@@ -14,6 +14,6 @@ public class test {
 
     @GetMapping("/test")
     public void test(@RequestParam String username){
-        System.out.println(repositoryImp.getTraining(username));
+        System.out.println(repositoryImp.getTrainingWithTrainee(username));
     }
 }
