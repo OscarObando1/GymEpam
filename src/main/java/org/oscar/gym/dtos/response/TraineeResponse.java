@@ -1,8 +1,11 @@
 package org.oscar.gym.dtos.response;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TraineeResponse {
 
     private String firstName;
