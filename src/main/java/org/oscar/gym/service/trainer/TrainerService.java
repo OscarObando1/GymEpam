@@ -2,45 +2,45 @@ package org.oscar.gym.service.trainer;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.oscar.gym.dtos.ChangePassDTO;
+import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
-import org.oscar.gym.dtos.response.TrainerResponse;
-import org.oscar.gym.entity.Trainee;
+import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
+import org.oscar.gym.dtos.response.TrainerResponseExtend;
+import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
 
-import java.util.NoSuchElementException;
-
 @Slf4j
 @Component
-public class TrainerSercice implements ITrainerService{
+public class TrainerService implements ITrainerService{
     private final TrainerRepository repository;
     private final Mapper mapper;
     private final IAuthenticator authenticator;
 
 
-    public TrainerSercice(TrainerRepository repository, Mapper mapper, IAuthenticator authenticator) {
+    public TrainerService(TrainerRepository repository, Mapper mapper, IAuthenticator authenticator) {
         this.repository = repository;
         this.mapper = mapper;
         this.authenticator = authenticator;
     }
 
     @Override
-    public void saveTrainer(TrainerDTO dto){
-        repository.saveEntity(dto);
+    public TrainerRegistrationResponse saveTrainer(TrainerRegistrationRequest dto){
+        Trainer trainer= repository.saveEntity(dto);
+        return mapper.mapTrainerResponse(trainer);
     }
 
-    public TrainerResponse findTrainer(LoginDTO dto, String username){
+    public TrainerResponseExtend findTrainer(LoginDTO dto, String username){
         if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
             throw new UnsupportedOperationException("Sorry user not authorized");
         }
          try {
                     Trainer trainer = repository.findEntity(username);
-                    return mapper.mapTrainerResponse(trainer);
+                    return mapper.mapTrainerResponseExtend(trainer);
                 }catch (Exception e) {
                     log.info("Does not found trainer with this username "+username);
                     }
@@ -48,13 +48,13 @@ public class TrainerSercice implements ITrainerService{
 
     }
     @Override
-    public TrainerResponse updateTrainer(LoginDTO dto,TrainerDTO trainerDTO, long id) {
+    public TrainerResponseExtend updateTrainer(LoginDTO dto, TrainerDTO trainerDTO, long id) {
         if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
             throw new UnsupportedOperationException("Sorry user not authorized");
         }
         try {
             Trainer trainer = repository.updateEntity(trainerDTO, id);
-            return mapper.mapTrainerResponse(trainer);
+            return mapper.mapTrainerResponseExtend(trainer);
         } catch (Exception e) {
             log.info("Trainer not found with id " + id);
         }
@@ -75,10 +75,10 @@ public class TrainerSercice implements ITrainerService{
     }
 
     @Override
-    public TrainerResponse activeOrDeactivateTrainer(long id) {
+    public TrainerResponseExtend activeOrDeactivateTrainer(long id) {
         try {
             Trainer trainer = repository.changeActive(id);
-            return mapper.mapTrainerResponse(trainer);
+            return mapper.mapTrainerResponseExtend(trainer);
         } catch (Exception e) {
             log.info("Trainer not found with id " + id);
         }

@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TraineeResponse {
+public class TraineeResponseExtend {
 
     private String firstName;
     private String lastName;

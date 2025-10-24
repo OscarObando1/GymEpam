@@ -2,15 +2,11 @@ package org.oscar.gym.service.training;
 
 import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.TrainingDTO;
-import org.oscar.gym.dtos.response.TraineeResponse;
-import org.oscar.gym.dtos.response.TrainerResponse;
 import org.oscar.gym.dtos.response.TrainingResponse;
-import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.Training;
 import org.oscar.gym.repository.training.TrainingRepository;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

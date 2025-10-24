@@ -3,8 +3,9 @@ package org.oscar.gym.repository.trainee;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.oscar.gym.dtos.ChangePassDTO;
+import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.TraineeDTO;
+import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.User;
 import org.oscar.gym.utils.IGenerator;
@@ -27,7 +28,7 @@ public class TraineeRepositoryImp implements TraineeRepository {
 
     @Override
     @Transactional
-    public Trainee saveEntity(TraineeDTO dto) {
+    public Trainee saveEntity(TraineeRegistrationRequest dto) {
         Trainee trainee = mapper.mapTrainee(dto);
         trainee.setUsername(generator.createUser(dto.getFirstName(), dto.getLastName()));
         trainee.setPassword(generator.generatePass());

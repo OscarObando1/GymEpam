@@ -1,12 +1,16 @@
 package org.oscar.gym.controller;
 
-import org.oscar.gym.dtos.ChangePassDTO;
+import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
-import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.request.RequestTrainee;
-import org.oscar.gym.dtos.response.TraineeResponse;
+import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
+import org.oscar.gym.dtos.response.TraineeResponseExtend;
+import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
+import org.oscar.gym.dtos.response.trainee.TraineeResponse;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.service.trainee.ITraineeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,17 +23,17 @@ public class TraineeController {
     }
 
     @GetMapping("/trainee")
-    public  TraineeResponse getTrainee(@RequestBody LoginDTO loginDTO, @RequestParam String username){
-        return traineeService.findTrainee(loginDTO,username);
+    public ResponseEntity<TraineeResponse> getTrainee(@RequestParam String username){
+        return new ResponseEntity<>(traineeService.findTrainee(username),HttpStatus.OK);
     }
 
     @PostMapping("/trainee")
-    public void createTrainee(@RequestBody TraineeDTO dto){
-        traineeService.saveTrainee(dto);
+    public ResponseEntity<TraineeRegistrationResponse> createTrainee(@RequestBody TraineeRegistrationRequest dto){
+        return new ResponseEntity<>(traineeService.saveTrainee(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/trainee/{id}")
-    public TraineeResponse updateTrainee(@RequestBody RequestTrainee dto, @PathVariable long id){
+    public TraineeResponseExtend updateTrainee(@RequestBody RequestTrainee dto, @PathVariable long id){
        return traineeService.updateTrainee(dto.getLoginDTO(),dto.getTraineeDTO(),id);
     }
 
@@ -39,12 +43,13 @@ public class TraineeController {
     }
 
     @PostMapping("/trainee/update/{id}")
-    public TraineeResponse updateActiveTrainee(@PathVariable long id){
+    public TraineeResponseExtend updateActiveTrainee(@PathVariable long id){
         return traineeService.activeOrDeactivateTraine(id);
     }
 
     @PostMapping("trainee/change")
-    public void changePassword(@RequestBody ChangePassDTO dto){
+    public ResponseEntity<?> changePassword(@RequestBody ChangePassDTO dto){
         traineeService.updatePassword(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

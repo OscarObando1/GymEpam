@@ -1,12 +1,14 @@
 package org.oscar.gym.controller;
 
-import org.oscar.gym.dtos.ChangePassDTO;
+import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
-import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.request.RequestTrainer;
-import org.oscar.gym.dtos.response.TraineeResponse;
-import org.oscar.gym.dtos.response.TrainerResponse;
+import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
+import org.oscar.gym.dtos.response.TrainerResponseExtend;
+import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.service.trainer.ITrainerService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,17 +21,17 @@ public class TrainerController {
     }
 
     @GetMapping("/trainer")
-    public TrainerResponse getTrainer(@RequestBody LoginDTO dto,@RequestParam String username){
+    public TrainerResponseExtend getTrainer(@RequestBody LoginDTO dto, @RequestParam String username){
         return service.findTrainer(dto,username);
     }
 
     @PostMapping("/trainer")
-    public void saveTrainer(@RequestBody TrainerDTO dto){
-        service.saveTrainer(dto);
+    public ResponseEntity<TrainerRegistrationResponse> saveTrainer(@RequestBody TrainerRegistrationRequest dto){
+        return new ResponseEntity<>(service.saveTrainer(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/trainer/{id}")
-    public TrainerResponse updateTrainer(@RequestBody RequestTrainer dto, @PathVariable long id){
+    public TrainerResponseExtend updateTrainer(@RequestBody RequestTrainer dto, @PathVariable long id){
         return service.updateTrainer(dto.getLoginDTO(),dto.getTrainerDTO(),id);
     }
 
@@ -44,7 +46,7 @@ public class TrainerController {
     }
 
     @PostMapping("/trainer/update/{id}")
-    public TrainerResponse updateActiveTrainee(@PathVariable long id){
+    public TrainerResponseExtend updateActiveTrainee(@PathVariable long id){
         return service.activeOrDeactivateTrainer(id);
     }
 

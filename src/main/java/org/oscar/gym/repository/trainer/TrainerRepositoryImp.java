@@ -5,8 +5,9 @@ import jakarta.persistence.EntityManager;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.oscar.gym.dtos.ChangePassDTO;
+import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.TrainerDTO;
+import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.TrainingType;
@@ -31,7 +32,7 @@ public class TrainerRepositoryImp  implements TrainerRepository{
 
     @Override
     @Transactional
-    public Trainer saveEntity(TrainerDTO dto) {
+    public Trainer saveEntity(TrainerRegistrationRequest dto) {
 
         TrainingType type = null;
         String jpql = "SELECT t FROM TrainingType t WHERE t.name = :name";

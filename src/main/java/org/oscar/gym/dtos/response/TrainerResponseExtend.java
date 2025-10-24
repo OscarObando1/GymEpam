@@ -9,14 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrainerResponse {
+public class TrainerResponseExtend {
     private String firstName;
     private String lastName;
     private String specialization;
 
-    @Override
-    public String toString() {
-        return "Trainer"+
-                firstName + ' ' + lastName + ' ' + specialization;
-    }
+
 }

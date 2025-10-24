@@ -1,26 +1,24 @@
 package org.oscar.gym.service.trainer;
 
-import org.oscar.gym.dtos.ChangePassDTO;
+import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
-import org.oscar.gym.dtos.response.TraineeResponse;
-import org.oscar.gym.dtos.response.TrainerResponse;
-import org.oscar.gym.entity.Trainer;
-
-import java.util.NoSuchElementException;
+import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
+import org.oscar.gym.dtos.response.TrainerResponseExtend;
+import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 
 public interface ITrainerService {
-    void saveTrainer(TrainerDTO dto);
+    TrainerRegistrationResponse saveTrainer(TrainerRegistrationRequest dto);
 
-    TrainerResponse findTrainer(LoginDTO dto,String username);
+    TrainerResponseExtend findTrainer(LoginDTO dto, String username);
 
-    TrainerResponse updateTrainer(LoginDTO dto,TrainerDTO trainerDTO, long id);
+    TrainerResponseExtend updateTrainer(LoginDTO dto, TrainerDTO trainerDTO, long id);
 
     void deleteTrainer(LoginDTO dto,String username);
 
     void assignTrainee(LoginDTO dto,String userTrainer, String userTrainee);
 
-    TrainerResponse activeOrDeactivateTrainer(long id);
+    TrainerResponseExtend activeOrDeactivateTrainer(long id);
 
     void updatePassword(ChangePassDTO dto);
 }
