@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
+import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.TrainingType;
@@ -69,7 +70,7 @@ public class TrainerRepositoryImp  implements TrainerRepository{
 
     @Override
     @Transactional
-    public Trainer updateEntity(TrainerDTO dto, long id) {
+    public Trainer updateEntity(TrainerUpdateRequest dto, long id) {
         Trainer trainer = null;
         trainer = entityManager.find(Trainer.class,id);
         if(trainer==null){
@@ -77,7 +78,7 @@ public class TrainerRepositoryImp  implements TrainerRepository{
         }
         trainer.setFirstName(dto.getFirstName());
         trainer.setLastName(dto.getLastName());
-        trainer.setUsername(generator.createUser(dto.getFirstName(),dto.getLastName()));
+        trainer.setUsername(dto.getUsername());
         try {
             entityManager.merge(trainer);
         }catch (Exception e){

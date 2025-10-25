@@ -3,7 +3,9 @@ package org.oscar.gym.controller;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.request.RequestTrainer;
+import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
+import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
@@ -32,8 +34,8 @@ public class TrainerController {
     }
 
     @PutMapping("/trainer/{id}")
-    public TrainerResponsetemp updateTrainer(@RequestBody RequestTrainer dto, @PathVariable long id){
-        return service.updateTrainer(dto.getLoginDTO(),dto.getTrainerDTO(),id);
+    public ResponseEntity<TrainerResponseExtend>  updateTrainer(@RequestBody TrainerUpdateRequest dto, @PathVariable long id){
+        return new ResponseEntity<>(service.updateTrainer(dto,id),HttpStatus.OK);
     }
 
     @DeleteMapping("/trainer")

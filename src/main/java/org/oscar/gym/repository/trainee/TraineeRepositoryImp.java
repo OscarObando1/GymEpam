@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.TraineeDTO;
+import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.entity.Trainee;
@@ -97,26 +98,32 @@ public class TraineeRepositoryImp implements TraineeRepository {
 
     @Override
     @Transactional
-    public Trainee changeActive(long id) {
+    public void changeActive(UserActivateDeActivate dto) {
         Trainee trainee = null;
-        trainee = entityManager.find(Trainee.class,id);
+        trainee = findEntity(dto.getUsername());
         if(trainee==null){
-            throw new RuntimeException("trainee not found with id "+id);
+            throw new RuntimeException("trainee not found with username "+dto.getUsername());
         }
         try {
-           if(trainee.getIsActive()){
-               trainee.setIsActive(false);
-               log.info("trainee inactive");
-           }else {
-               trainee.setIsActive(true);
-               log.info("trainee activated");
+           if(trainee.getIsActive()&&dto.isActive()){
+               log.info("trainee is already active");
            }
-            entityManager.merge(trainee);
+           if(trainee.getIsActive()&& !dto.isActive()){
+               entityManager.merge(trainee);
+               log.info("trainee is deactivated");
+           }
+            if(!trainee.getIsActive()&&dto.isActive()){
+                entityManager.merge(trainee);
+                log.info("trainee is active");
+            }
+            if(!trainee.getIsActive()&& !dto.isActive()){
+                log.info("trainee is already deactivated");
+            }
+
         }catch (Exception e){
             e.printStackTrace();
             log.debug("something happened during change activity");
         }
-        return trainee;
 
     }
 

@@ -6,6 +6,7 @@ import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
+import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
@@ -46,13 +47,10 @@ public class TrainerService implements ITrainerService{
 
     }
     @Override
-    public TrainerResponsetemp updateTrainer(LoginDTO dto, TrainerDTO trainerDTO, long id) {
-        if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
-            throw new UnsupportedOperationException("Sorry user not authorized");
-        }
+    public TrainerResponseExtend updateTrainer(TrainerUpdateRequest dto, long id) {
         try {
-            Trainer trainer = repository.updateEntity(trainerDTO, id);
-            return mapper.mapTrainerResponsetemp(trainer);
+            Trainer trainer = repository.updateEntity(dto, id);
+            return mapper.mapTrainerResponseGetMethod(trainer);
         } catch (Exception e) {
             log.info("Trainer not found with id " + id);
         }

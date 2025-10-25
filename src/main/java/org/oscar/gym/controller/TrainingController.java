@@ -1,8 +1,10 @@
 package org.oscar.gym.controller;
 
-import org.oscar.gym.dtos.TrainingDTO;
+import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.dtos.response.TrainingResponse;
 import org.oscar.gym.service.training.ITrainingService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +19,9 @@ public class TrainingController {
     }
 
     @PostMapping("/training")
-    public void createTraining(@RequestBody TrainingDTO dto){
+    public ResponseEntity<?> createTraining(@RequestBody TrainingDTO dto){
         service.createTraining(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/training/trainee")

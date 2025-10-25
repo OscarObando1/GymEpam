@@ -1,6 +1,7 @@
 package org.oscar.gym.service.trainee;
 
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
+import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.response.trainee.TraineeResponse;
@@ -16,7 +17,7 @@ public interface ITraineeService {
 
    void deleteTrainee(String username);
 
-   TraineeResponse activeOrDeactivateTraine(long id);
+   void activeOrDeactivateTraine(UserActivateDeActivate dto);
 
    void updatePassword(ChangePassDTO dto);
 }

@@ -1,7 +1,7 @@
 package org.oscar.gym.service.training;
 
 import lombok.extern.slf4j.Slf4j;
-import org.oscar.gym.dtos.TrainingDTO;
+import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.dtos.response.TrainingResponse;
 import org.oscar.gym.entity.Training;
 import org.oscar.gym.repository.training.TrainingRepository;

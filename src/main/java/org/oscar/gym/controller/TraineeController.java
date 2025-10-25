@@ -1,6 +1,7 @@
 package org.oscar.gym.controller;
 
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
+import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.response.trainee.TraineeResponse;
@@ -43,8 +44,9 @@ public class TraineeController {
     }
 
     @PostMapping("/trainee/update/{id}")
-    public TraineeResponse updateActiveTrainee(@PathVariable long id){
-        return traineeService.activeOrDeactivateTraine(id);
+    public ResponseEntity<?> updateActiveTrainee(@RequestBody UserActivateDeActivate dto){
+        traineeService.activeOrDeactivateTraine(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("trainee/change")

@@ -2,6 +2,7 @@ package org.oscar.gym.service.trainee;
 
 import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
+import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.response.trainee.TraineeResponse;
@@ -58,14 +59,12 @@ public class TraineeService implements ITraineeService  {
     }
 
     @Override
-    public TraineeResponse activeOrDeactivateTraine(long id) {
+    public void activeOrDeactivateTraine(UserActivateDeActivate dto) {
         try {
-            Trainee trainee = repository.changeActive(id);
-            return null; //mapper.mapTraineeResponse(trainee);
+            repository.changeActive(dto);
         } catch (Exception e) {
-            log.info("Trainee not found with id " + id);
+            log.info("Trainee not found with username " + dto.getUsername());
         }
-        return null;
     }
 
     @Override

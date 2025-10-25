@@ -4,6 +4,7 @@ import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
+import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
@@ -13,7 +14,7 @@ public interface ITrainerService {
 
     TrainerResponseExtend findTrainer(String username);
 
-    TrainerResponsetemp updateTrainer(LoginDTO dto, TrainerDTO trainerDTO, long id);
+    TrainerResponseExtend updateTrainer(TrainerUpdateRequest dto, long id);
 
     void deleteTrainer(LoginDTO dto,String username);
 

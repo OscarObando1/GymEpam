@@ -91,6 +91,18 @@ public class Mapper {
         return response;
     }
 
+    public TrainerResponseExtend mapTrainerResponseUpdateMethod(Trainer trainer){
+        TrainerResponseExtend response = new TrainerResponseExtend();
+        response.setUsername(trainer.getUsername());
+        response.setFirstName(trainer.getFirstName());
+        response.setLastName(trainer.getLastName());
+        response.setSpecialization(trainer.getSpecialization().getName().name());
+        response.setActive(trainer.getIsActive());
+        List<TraineeResponse> list = trainer.getTrainees().stream().map(e->mapTraineeResponseExtendGetMethod(e)).toList();
+        response.setTraineeResponseList(list);
+        return response;
+    }
+
     public Trainer mapTrainer(TrainerRegistrationRequest dto){
         Trainer trainer = new Trainer();
         trainer.setFirstName(dto.getFirstName());

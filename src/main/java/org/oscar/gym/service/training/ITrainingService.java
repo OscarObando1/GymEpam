@@ -1,6 +1,6 @@
 package org.oscar.gym.service.training;
 
-import org.oscar.gym.dtos.TrainingDTO;
+import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.dtos.response.TrainingResponse;
 import org.springframework.stereotype.Component;
 

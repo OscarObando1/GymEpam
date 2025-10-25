@@ -1,4 +1,4 @@
-package org.oscar.gym.dtos;
+package org.oscar.gym.dtos.request.training;
 
 import lombok.Getter;
 import lombok.Setter;

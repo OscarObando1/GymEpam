@@ -3,7 +3,7 @@ package org.oscar.gym.repository.training;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.oscar.gym.dtos.TrainingDTO;
+import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.Training;
