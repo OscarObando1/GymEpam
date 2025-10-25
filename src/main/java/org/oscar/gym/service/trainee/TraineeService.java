@@ -2,12 +2,11 @@ package org.oscar.gym.service.trainee;
 
 import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
-import org.oscar.gym.dtos.LoginDTO;
-import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
-import org.oscar.gym.dtos.response.TraineeResponseExtend;
-import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
+import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.response.trainee.TraineeResponse;
+import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
+import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.security.IAuthenticator;
@@ -33,7 +32,7 @@ public class TraineeService implements ITraineeService  {
         return mapper.mapTraineeResponseCreate(trainee);
     }
 
-    public TraineeResponse findTrainee(String username){
+    public TraineeResponseExtend findTrainee(String username){
         try {
             Trainee trainee = repository.findEntity(username);
             return mapper.mapTraineeResponseGet(trainee);
@@ -44,31 +43,25 @@ public class TraineeService implements ITraineeService  {
 
     }
 
-    public TraineeResponseExtend updateTrainee(LoginDTO loginDTO, TraineeDTO traineeDTO, long id) {
-        if(!authenticator.isAuthorized(loginDTO.getUsername(), loginDTO.getPassword())){
-            throw new UnsupportedOperationException("Sorry user not authorized");
-        }
+    public TraineeResponseExtend updateTrainee(TraineeUpdateRequest dto, long id) {
         try {
-            Trainee trainee = repository.updateEntity(traineeDTO, id);
-            return mapper.mapTraineeResponseExtend(trainee);
+            Trainee trainee = repository.updateEntity(dto, id);
+            return mapper.mapTraineeResponseGet(trainee);
         } catch (Exception e) {
             log.info("Trainee not found with id " + id);
         }
         return null;
     }
 
-    public void deleteTrainee(LoginDTO loginDTO,String username){
-        if(!authenticator.isAuthorized(loginDTO.getUsername(), loginDTO.getPassword())){
-            throw new UnsupportedOperationException("Sorry user not authorized");
-        }
+    public void deleteTrainee(String username){
         repository.deleteEntity(username);
     }
 
     @Override
-    public TraineeResponseExtend activeOrDeactivateTraine(long id) {
+    public TraineeResponse activeOrDeactivateTraine(long id) {
         try {
             Trainee trainee = repository.changeActive(id);
-            return mapper.mapTraineeResponseExtend(trainee);
+            return null; //mapper.mapTraineeResponse(trainee);
         } catch (Exception e) {
             log.info("Trainee not found with id " + id);
         }

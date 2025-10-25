@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
+import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.User;
 import org.oscar.gym.utils.IGenerator;
@@ -54,7 +55,7 @@ public class TraineeRepositoryImp implements TraineeRepository {
 
     @Override
     @Transactional
-    public Trainee updateEntity(TraineeDTO dto, long id) {
+    public Trainee updateEntity(TraineeUpdateRequest dto, long id) {
         Trainee trainee = null;
         trainee = entityManager.find(Trainee.class,id);
         if(trainee==null){
@@ -65,6 +66,7 @@ public class TraineeRepositoryImp implements TraineeRepository {
         trainee.setUsername(generator.createUser(dto.getFirstName(),dto.getLastName()));
         trainee.setAddress(dto.getAddress());
         trainee.setDateOfBirth(dto.getDateOfBirth());
+        trainee.setIsActive(dto.isActive());
         try {
             entityManager.merge(trainee);
         }catch (Exception e){

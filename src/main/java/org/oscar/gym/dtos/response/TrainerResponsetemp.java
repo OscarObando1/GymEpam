@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrainerResponseExtend {
+public class TrainerResponsetemp {
     private String firstName;
     private String lastName;
     private String specialization;

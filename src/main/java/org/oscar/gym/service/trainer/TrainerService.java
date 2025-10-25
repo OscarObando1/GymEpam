@@ -6,8 +6,9 @@ import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
-import org.oscar.gym.dtos.response.TrainerResponseExtend;
+import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
+import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.oscar.gym.security.IAuthenticator;
@@ -34,13 +35,10 @@ public class TrainerService implements ITrainerService{
         return mapper.mapTrainerResponse(trainer);
     }
 
-    public TrainerResponseExtend findTrainer(LoginDTO dto, String username){
-        if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
-            throw new UnsupportedOperationException("Sorry user not authorized");
-        }
+    public TrainerResponseExtend findTrainer(String username){
          try {
                     Trainer trainer = repository.findEntity(username);
-                    return mapper.mapTrainerResponseExtend(trainer);
+                    return mapper.mapTrainerResponseGetMethod(trainer);
                 }catch (Exception e) {
                     log.info("Does not found trainer with this username "+username);
                     }
@@ -48,13 +46,13 @@ public class TrainerService implements ITrainerService{
 
     }
     @Override
-    public TrainerResponseExtend updateTrainer(LoginDTO dto, TrainerDTO trainerDTO, long id) {
+    public TrainerResponsetemp updateTrainer(LoginDTO dto, TrainerDTO trainerDTO, long id) {
         if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
             throw new UnsupportedOperationException("Sorry user not authorized");
         }
         try {
             Trainer trainer = repository.updateEntity(trainerDTO, id);
-            return mapper.mapTrainerResponseExtend(trainer);
+            return mapper.mapTrainerResponsetemp(trainer);
         } catch (Exception e) {
             log.info("Trainer not found with id " + id);
         }
@@ -75,10 +73,10 @@ public class TrainerService implements ITrainerService{
     }
 
     @Override
-    public TrainerResponseExtend activeOrDeactivateTrainer(long id) {
+    public TrainerResponsetemp activeOrDeactivateTrainer(long id) {
         try {
             Trainer trainer = repository.changeActive(id);
-            return mapper.mapTrainerResponseExtend(trainer);
+            return mapper.mapTrainerResponsetemp(trainer);
         } catch (Exception e) {
             log.info("Trainer not found with id " + id);
         }

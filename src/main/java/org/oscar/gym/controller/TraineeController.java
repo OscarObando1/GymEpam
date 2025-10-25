@@ -1,12 +1,11 @@
 package org.oscar.gym.controller;
 
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
-import org.oscar.gym.dtos.LoginDTO;
-import org.oscar.gym.dtos.request.RequestTrainee;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
-import org.oscar.gym.dtos.response.TraineeResponseExtend;
-import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
+import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.response.trainee.TraineeResponse;
+import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
+import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.service.trainee.ITraineeService;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ public class TraineeController {
     }
 
     @GetMapping("/trainee")
-    public ResponseEntity<TraineeResponse> getTrainee(@RequestParam String username){
+    public ResponseEntity<TraineeResponseExtend> getTrainee(@RequestParam String username){
         return new ResponseEntity<>(traineeService.findTrainee(username),HttpStatus.OK);
     }
 
@@ -33,17 +32,18 @@ public class TraineeController {
     }
 
     @PutMapping("/trainee/{id}")
-    public TraineeResponseExtend updateTrainee(@RequestBody RequestTrainee dto, @PathVariable long id){
-       return traineeService.updateTrainee(dto.getLoginDTO(),dto.getTraineeDTO(),id);
+    public ResponseEntity<TraineeResponseExtend> updateTrainee(@RequestBody TraineeUpdateRequest dto, @PathVariable long id){
+       return new ResponseEntity<>(traineeService.updateTrainee(dto,id),HttpStatus.OK);
     }
 
     @DeleteMapping("/trainee")
-    public void deleteTrainee(@RequestBody LoginDTO dto, @RequestParam String username){
-        traineeService.deleteTrainee(dto,username);
+    public ResponseEntity<?> deleteTrainee(@RequestParam String username){
+        traineeService.deleteTrainee(username);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/trainee/update/{id}")
-    public TraineeResponseExtend updateActiveTrainee(@PathVariable long id){
+    public TraineeResponse updateActiveTrainee(@PathVariable long id){
         return traineeService.activeOrDeactivateTraine(id);
     }
 

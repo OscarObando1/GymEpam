@@ -4,8 +4,9 @@ import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.request.RequestTrainer;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
-import org.oscar.gym.dtos.response.TrainerResponseExtend;
+import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
+import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
 import org.oscar.gym.service.trainer.ITrainerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class TrainerController {
     }
 
     @GetMapping("/trainer")
-    public TrainerResponseExtend getTrainer(@RequestBody LoginDTO dto, @RequestParam String username){
-        return service.findTrainer(dto,username);
+    public ResponseEntity<TrainerResponseExtend> getTrainer(@RequestParam String username){
+        return new ResponseEntity<>(service.findTrainer(username),HttpStatus.OK);
     }
 
     @PostMapping("/trainer")
@@ -31,7 +32,7 @@ public class TrainerController {
     }
 
     @PutMapping("/trainer/{id}")
-    public TrainerResponseExtend updateTrainer(@RequestBody RequestTrainer dto, @PathVariable long id){
+    public TrainerResponsetemp updateTrainer(@RequestBody RequestTrainer dto, @PathVariable long id){
         return service.updateTrainer(dto.getLoginDTO(),dto.getTrainerDTO(),id);
     }
 
@@ -46,7 +47,7 @@ public class TrainerController {
     }
 
     @PostMapping("/trainer/update/{id}")
-    public TrainerResponseExtend updateActiveTrainee(@PathVariable long id){
+    public TrainerResponsetemp updateActiveTrainee(@PathVariable long id){
         return service.activeOrDeactivateTrainer(id);
     }
 

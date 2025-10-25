@@ -4,13 +4,14 @@ package org.oscar.gym.utils;
 import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
-import org.oscar.gym.dtos.response.TraineeResponseExtend;
-import org.oscar.gym.dtos.response.TrainerResponseExtend;
+import org.oscar.gym.dtos.response.trainee.TraineeResponse;
+import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.TrainingResponse;
 import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
-import org.oscar.gym.dtos.response.trainee.TraineeResponse;
+import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponse;
+import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.Training;
@@ -58,8 +59,8 @@ public class Mapper {
         return  response;
     }
 
-    public TraineeResponse mapTraineeResponseGet(Trainee trainee){
-        TraineeResponse response = new TraineeResponse();
+    public TraineeResponseExtend mapTraineeResponseGet(Trainee trainee){
+        TraineeResponseExtend response = new TraineeResponseExtend();
         response.setFirstName(trainee.getFirstName());
         response.setLastName(trainee.getLastName());
         response.setDateOfBirth(trainee.getDateOfBirth());
@@ -71,11 +72,22 @@ public class Mapper {
     }
 
 
-    public TraineeResponseExtend mapTraineeResponseExtend(Trainee trainee){
-        TraineeResponseExtend response = new TraineeResponseExtend();
+    public TraineeResponse mapTraineeResponseExtendGetMethod(Trainee trainee){
+        TraineeResponse response = new TraineeResponse();
         response.setFirstName(trainee.getFirstName());
         response.setLastName(trainee.getLastName());
         response.setUsername(trainee.getUsername());
+        return response;
+    }
+
+    public TrainerResponseExtend mapTrainerResponseGetMethod(Trainer trainer){
+        TrainerResponseExtend response = new TrainerResponseExtend();
+        response.setFirstName(trainer.getFirstName());
+        response.setLastName(trainer.getLastName());
+        response.setSpecialization(trainer.getSpecialization().getName().name());
+        response.setActive(trainer.getIsActive());
+        List<TraineeResponse> list = trainer.getTrainees().stream().map(e->mapTraineeResponseExtendGetMethod(e)).toList();
+        response.setTraineeResponseList(list);
         return response;
     }
 
@@ -95,8 +107,8 @@ public class Mapper {
         return response;
     }
 
-    public TrainerResponseExtend mapTrainerResponseExtend(Trainer trainer){
-        TrainerResponseExtend response = new TrainerResponseExtend();
+    public TrainerResponsetemp mapTrainerResponsetemp(Trainer trainer){
+        TrainerResponsetemp response = new TrainerResponsetemp();
         response.setFirstName(trainer.getFirstName());
         response.setLastName(trainer.getLastName());
         response.setSpecialization(trainer.getSpecialization().getName().name());
