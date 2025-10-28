@@ -1,13 +1,10 @@
 package org.oscar.gym.controller;
 
-import org.oscar.gym.dtos.request.temp.ChangePassDTO;
-import org.oscar.gym.dtos.LoginDTO;
-import org.oscar.gym.dtos.request.RequestTrainer;
-import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
-import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
+import org.oscar.gym.dtos.ChangePassDTO;
+
+import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
-import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
 import org.oscar.gym.service.trainer.ITrainerService;
@@ -39,15 +36,15 @@ public class TrainerController {
         return new ResponseEntity<>(service.updateTrainer(dto,id),HttpStatus.OK);
     }
 
-    @DeleteMapping("/trainer")
-    public void deleteTrainer(@RequestBody LoginDTO dto,@RequestParam String username){
-        service.deleteTrainer(dto,username);
-    }
-
-    @PostMapping("/trainer/assign")
-    public void assignTrainee(@RequestBody LoginDTO dto,@RequestParam String userTrainer, @RequestParam String userTrainee){
-        service.assignTrainee(dto,userTrainer,userTrainee);
-    }
+//    @DeleteMapping("/trainer")
+//    public void deleteTrainer(@RequestBody LoginDTO dto,@RequestParam String username){
+//        service.deleteTrainer(dto,username);
+//    }
+//
+//    @PostMapping("/trainer/assign")
+//    public void assignTrainee(@RequestBody LoginDTO dto,@RequestParam String userTrainer, @RequestParam String userTrainee){
+//        service.assignTrainee(dto,userTrainer,userTrainee);
+//    }
 
     @PatchMapping ("/trainer/update/{id}")
     public ResponseEntity<?> updateActiveTrainee(@RequestBody UserActivateDeActivate dto){
@@ -56,7 +53,8 @@ public class TrainerController {
     }
 
     @PostMapping("trainer/change")
-    public void changePassword(@RequestBody ChangePassDTO dto){
+    public ResponseEntity<?> changePassword(@RequestBody ChangePassDTO dto){
         service.updatePassword(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

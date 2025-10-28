@@ -5,9 +5,8 @@ import jakarta.persistence.EntityManager;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.oscar.gym.dtos.request.temp.ChangePassDTO;
-import org.oscar.gym.dtos.TrainerDTO;
-import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
+import org.oscar.gym.dtos.ChangePassDTO;
+import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.entity.Trainee;

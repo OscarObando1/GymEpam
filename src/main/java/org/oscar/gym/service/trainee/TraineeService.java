@@ -1,11 +1,10 @@
 package org.oscar.gym.service.trainee;
 
 import lombok.extern.slf4j.Slf4j;
-import org.oscar.gym.dtos.request.temp.ChangePassDTO;
-import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
+import org.oscar.gym.dtos.ChangePassDTO;
+import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
-import org.oscar.gym.dtos.response.trainee.TraineeResponse;
 import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
 import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
 import org.oscar.gym.entity.Trainee;

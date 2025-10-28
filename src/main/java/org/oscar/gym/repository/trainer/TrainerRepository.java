@@ -1,8 +1,7 @@
 package org.oscar.gym.repository.trainer;
 
-import org.oscar.gym.dtos.request.temp.ChangePassDTO;
-import org.oscar.gym.dtos.TrainerDTO;
-import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
+import org.oscar.gym.dtos.ChangePassDTO;
+import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.entity.Trainer;

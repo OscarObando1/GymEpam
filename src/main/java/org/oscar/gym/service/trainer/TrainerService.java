@@ -2,13 +2,11 @@ package org.oscar.gym.service.trainer;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.oscar.gym.dtos.request.temp.ChangePassDTO;
-import org.oscar.gym.dtos.LoginDTO;
-import org.oscar.gym.dtos.TrainerDTO;
-import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
+import org.oscar.gym.dtos.ChangePassDTO;
+
+import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
-import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
 import org.oscar.gym.entity.Trainer;
@@ -58,18 +56,18 @@ public class TrainerService implements ITrainerService{
         return null;
     }
 
-    @Override
-    public void deleteTrainer(LoginDTO dto,String username){
-        if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
-            throw new UnsupportedOperationException("Sorry user not authorized");
-        }
-        repository.deleteEntity(username);
-    }
-
-    @Override
-    public void assignTrainee(LoginDTO dto,String userTrainer, String userTrainee){
-        repository.assignTraineeEntity(userTrainer,userTrainee);
-    }
+//    @Override
+//    public void deleteTrainer(LoginDTO dto,String username){
+//        if(!authenticator.isAuthorized(dto.getUsername(), dto.getPassword())){
+//            throw new UnsupportedOperationException("Sorry user not authorized");
+//        }
+//        repository.deleteEntity(username);
+//    }
+//
+//    @Override
+//    public void assignTrainee(LoginDTO dto,String userTrainer, String userTrainee){
+//        repository.assignTraineeEntity(userTrainer,userTrainee);
+//    }
 
     @Override
     public void activeOrDeactivateTrainer(UserActivateDeActivate dto) {
