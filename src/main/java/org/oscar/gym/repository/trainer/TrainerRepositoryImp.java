@@ -17,6 +17,8 @@ import org.oscar.gym.utils.IGenerator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
 public class TrainerRepositoryImp  implements TrainerRepository{
@@ -173,5 +175,21 @@ public class TrainerRepositoryImp  implements TrainerRepository{
         trainer= findEntity(dto.getUsername());
         trainer.setPassword(dto.getNewPass());
         entityManager.merge(trainer);
+    }
+
+    @Override
+    @Transactional
+    public List<Trainer> getTrainerWithoutTrainee(String username){
+        return entityManager.createQuery(
+                        "SELECT t FROM Trainer t " +
+                                "WHERE t.id NOT IN (" +
+                                "   SELECT tr.id FROM Trainee tn " +
+                                "   JOIN tn.trainers tr " +
+                                "   WHERE tn.username = :username" +
+                                ")",
+                        Trainer.class
+                )
+                .setParameter("username", username)
+                .getResultList();
     }
 }

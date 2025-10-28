@@ -1,8 +1,11 @@
 package org.oscar.gym.repository.training;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.oscar.gym.dtos.request.training.TraineeTrainingsListResquest;
+import org.oscar.gym.dtos.request.training.TrainerTrainingsListRequest;
 import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
@@ -12,7 +15,9 @@ import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -119,4 +124,73 @@ public class TrainingRepositoryImp implements TrainingRepository{
         }
         return list;
     }
+
+    public List<Training> getTraineeTrainings(TraineeTrainingsListResquest dto) {
+        StringBuilder jpql = new StringBuilder(
+                "SELECT tr FROM Training tr WHERE tr.trainee.username = :username"
+        );
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", dto.getUsername());
+
+
+        if (dto.getDateFrom() != null) {
+            jpql.append(" AND tr.trainingDate >= :dateFrom");
+            params.put("dateFrom", dto.getDateFrom());
+        }
+
+
+        if (dto.getDateTo() != null) {
+            jpql.append(" AND tr.trainingDate <= :dateTo");
+            params.put("dateTo", dto.getDateTo());
+        }
+
+
+        if (dto.getTrainerName() != null && !dto.getTrainerName().isBlank()) {
+            jpql.append(" AND LOWER(CONCAT(tr.trainer.firstName, ' ', tr.trainer.lastName)) LIKE LOWER(CONCAT('%', :trainerName, '%'))");
+            params.put("trainerName", dto.getTrainerName());
+        }
+
+        jpql.append(" ORDER BY tr.trainingDate DESC");
+
+        TypedQuery<Training> query = entityManager.createQuery(jpql.toString(), Training.class);
+        params.forEach(query::setParameter);
+
+        return query.getResultList();
+    }
+
+    public List<Training> getTrainerTrainings(TrainerTrainingsListRequest dto) {
+        StringBuilder jpql = new StringBuilder(
+                "SELECT tr FROM Training tr WHERE tr.trainer.username = :username"
+        );
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", dto.getUsername());
+
+
+        if (dto.getDateFrom() != null) {
+            jpql.append(" AND tr.trainingDate >= :dateFrom");
+            params.put("dateFrom", dto.getDateFrom());
+        }
+
+
+        if (dto.getDateTo() != null) {
+            jpql.append(" AND tr.trainingDate <= :dateTo");
+            params.put("dateTo", dto.getDateTo());
+        }
+
+
+        if (dto.getTraineeName() != null && !dto.getTraineeName().isBlank()) {
+            jpql.append(" AND LOWER(CONCAT(tr.trainee.firstName, ' ', tr.trainee.lastName)) LIKE LOWER(CONCAT('%', :traineeName, '%'))");
+            params.put("traineeName", dto.getTraineeName());
+        }
+
+        jpql.append(" ORDER BY tr.trainingDate DESC");
+
+        TypedQuery<Training> query = entityManager.createQuery(jpql.toString(), Training.class);
+        params.forEach(query::setParameter);
+
+        return query.getResultList();
+    }
+
 }

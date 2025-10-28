@@ -8,12 +8,15 @@ import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
+import org.oscar.gym.dtos.response.trainer.TrainerResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -84,5 +87,12 @@ public class TrainerService implements ITrainerService{
             throw new UnsupportedOperationException("Sorry user not authorized");
         }
         repository.updatePass(dto);
+    }
+
+    @Override
+    public List<TrainerResponse> trainerWithoutTrainee(String username) {
+        List<Trainer> list = null;
+        list= repository.getTrainerWithoutTrainee(username);
+        return list.stream().map(e->mapper.mapTrainerResponseGet(e)).toList();
     }
 }

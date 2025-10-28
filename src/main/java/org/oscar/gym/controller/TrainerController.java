@@ -6,11 +6,16 @@ import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
+import org.oscar.gym.dtos.response.trainer.TrainerResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
+import org.oscar.gym.repository.trainer.TrainerRepositoryImp;
 import org.oscar.gym.service.trainer.ITrainerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class TrainerController {
@@ -56,5 +61,10 @@ public class TrainerController {
     public ResponseEntity<?> changePassword(@RequestBody ChangePassDTO dto){
         service.updatePassword(dto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("trainer/not-asigned")
+    public ResponseEntity<List<TrainerResponse>> trainerWithouTrainee(@RequestParam String username){
+        return  new ResponseEntity<>(service.trainerWithoutTrainee(username),HttpStatus.OK);
     }
 }

@@ -7,6 +7,8 @@ import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.entity.Trainer;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public interface TrainerRepository {
     Trainer saveEntity(TrainerRegistrationRequest dto);
@@ -16,4 +18,5 @@ public interface TrainerRepository {
     void assignTraineeEntity(String userTrainer,String userTrainee);
     void changeActive(UserActivateDeActivate dto);
     void updatePass(ChangePassDTO dto);
+    public List<Trainer> getTrainerWithoutTrainee(String username);
 }
