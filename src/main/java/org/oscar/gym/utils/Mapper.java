@@ -12,9 +12,11 @@ import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
+import org.oscar.gym.dtos.response.training.TrainingResponseAll;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.Training;
+import org.oscar.gym.entity.TrainingType;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -133,6 +135,13 @@ public class Mapper {
         response.setTrainerUsername(training.getTrainer().getUsername());
         response.setTraineeUsername(training.getTrainee().getUsername());
         response.setType(training.getTrainingType().getName().toString());
+        return response;
+    }
+
+    public TrainingResponseAll mapTrainingResponseType(TrainingType trainingType){
+        TrainingResponseAll response = new TrainingResponseAll();
+        response.setTrainingType(trainingType.getName().name());
+        response.setTrainingTypeId(trainingType.getId());
         return response;
     }
 

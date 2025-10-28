@@ -3,6 +3,7 @@ package org.oscar.gym.service.trainer;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
+import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.dtos.response.TrainerResponsetemp;
@@ -20,7 +21,7 @@ public interface ITrainerService {
 
     void assignTrainee(LoginDTO dto,String userTrainer, String userTrainee);
 
-    TrainerResponsetemp activeOrDeactivateTrainer(long id);
+    void activeOrDeactivateTrainer(UserActivateDeActivate dto);
 
     void updatePassword(ChangePassDTO dto);
 }

@@ -3,7 +3,9 @@ package org.oscar.gym.service.training;
 import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.dtos.response.TrainingResponse;
+import org.oscar.gym.dtos.response.training.TrainingResponseAll;
 import org.oscar.gym.entity.Training;
+import org.oscar.gym.entity.TrainingType;
 import org.oscar.gym.repository.training.TrainingRepository;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
@@ -50,6 +52,15 @@ public class TrainigService implements ITrainingService{
             log.info("Trainer not found with username " + username);
         }
         return null;
+    }
+
+    @Override
+    public List<TrainingResponseAll> listTypes() {
+        List<TrainingResponseAll> list = null;
+        List<TrainingType> trainingType = null;
+        trainingType = repository.getTypes();
+        list = trainingType.stream().map(e->mapper.mapTrainingResponseType(e)).toList();
+        return list;
     }
 
 

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.TrainerDTO;
+import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.dtos.response.TrainerResponsetemp;
@@ -71,14 +72,12 @@ public class TrainerService implements ITrainerService{
     }
 
     @Override
-    public TrainerResponsetemp activeOrDeactivateTrainer(long id) {
+    public void activeOrDeactivateTrainer(UserActivateDeActivate dto) {
         try {
-            Trainer trainer = repository.changeActive(id);
-            return mapper.mapTrainerResponsetemp(trainer);
+            repository.changeActive(dto);
         } catch (Exception e) {
-            log.info("Trainer not found with id " + id);
+            log.info("Trainer not found with username " + dto.getUsername());
         }
-        return null;
     }
 
     @Override

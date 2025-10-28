@@ -2,6 +2,7 @@ package org.oscar.gym.controller;
 
 import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.dtos.response.TrainingResponse;
+import org.oscar.gym.dtos.response.training.TrainingResponseAll;
 import org.oscar.gym.service.training.ITrainingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,17 @@ public class TrainingController {
     }
 
     @GetMapping("/training/trainee")
-    public List<TrainingResponse> ListTrainingTrainee(@RequestParam String username){
+    public List<TrainingResponse> listTrainingTrainee(@RequestParam String username){
         return service.listTrainingOfTrainee(username);
     }
 
     @GetMapping("/training/trainer")
-    public List<TrainingResponse> ListTrainingTrainer(@RequestParam String username){
+    public List<TrainingResponse> listTrainingTrainer(@RequestParam String username){
         return service.listTrainingOfTrainer(username);
+    }
+
+    @GetMapping("/training")
+    public ResponseEntity<List<TrainingResponseAll>> typeTrainings(){
+        return new ResponseEntity<>(service.listTypes(), HttpStatus.OK);
     }
 }

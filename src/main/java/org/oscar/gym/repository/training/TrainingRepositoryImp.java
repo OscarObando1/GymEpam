@@ -7,6 +7,7 @@ import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.Training;
+import org.oscar.gym.entity.TrainingType;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.springframework.stereotype.Component;
@@ -104,6 +105,18 @@ public class TrainingRepositoryImp implements TrainingRepository{
         }
 
 
+        return list;
+    }
+
+    @Override
+    public List<TrainingType> getTypes() {
+        List<TrainingType> list = null;
+        try {
+            list = entityManager.createQuery("SELECT t FROM TrainingType t", TrainingType.class)
+                    .getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return list;
     }
 }

@@ -43,7 +43,7 @@ public class TraineeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/trainee/update/{id}")
+    @PatchMapping("/trainee/update/{id}")
     public ResponseEntity<?> updateActiveTrainee(@RequestBody UserActivateDeActivate dto){
         traineeService.activeOrDeactivateTraine(dto);
         return new ResponseEntity<>(HttpStatus.OK);

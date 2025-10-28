@@ -2,6 +2,7 @@ package org.oscar.gym.repository.trainer;
 
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.TrainerDTO;
+import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.entity.Trainer;
@@ -14,6 +15,6 @@ public interface TrainerRepository {
     Trainer updateEntity(TrainerUpdateRequest dto, long id);
     void deleteEntity(String username);
     void assignTraineeEntity(String userTrainer,String userTrainee);
-    Trainer changeActive(long id);
+    void changeActive(UserActivateDeActivate dto);
     void updatePass(ChangePassDTO dto);
 }

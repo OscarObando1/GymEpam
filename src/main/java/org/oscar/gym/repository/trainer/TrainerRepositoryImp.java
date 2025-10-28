@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.TrainerDTO;
+import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.entity.Trainee;
@@ -138,25 +139,32 @@ public class TrainerRepositoryImp  implements TrainerRepository{
     }
 
     @Override
-    public Trainer changeActive(long id) {
+    public void changeActive(UserActivateDeActivate dto) {
         Trainer trainer = null;
-        trainer = entityManager.find(Trainer.class,id);
+        trainer = findEntity(dto.getUsername());
         if(trainer==null){
-            throw new RuntimeException("Not Found with this id "+id);
+            throw new RuntimeException("trainee not found with username "+dto.getUsername());
         }
         try {
-            if(trainer.getIsActive()){
-                trainer.setIsActive(false);
-                log.info("trainer inactive");
-            }else {
-                trainer.setIsActive(true);
-                log.info("trainer active");
+            if(trainer.getIsActive()&&dto.isActive()){
+                log.info("trainer is already active");
             }
-            entityManager.merge(trainer);
+            if(trainer.getIsActive()&& !dto.isActive()){
+                entityManager.merge(trainer);
+                log.info("trainer is deactivated");
+            }
+            if(!trainer.getIsActive()&&dto.isActive()){
+                entityManager.merge(trainer);
+                log.info("trainer is active");
+            }
+            if(!trainer.getIsActive()&& !dto.isActive()){
+                log.info("trainer is already deactivated");
+            }
+
         }catch (Exception e){
             e.printStackTrace();
+            log.debug("something happened during change activity");
         }
-        return trainer;
     }
 
     @Override

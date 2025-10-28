@@ -3,6 +3,7 @@ package org.oscar.gym.controller;
 import org.oscar.gym.dtos.request.temp.ChangePassDTO;
 import org.oscar.gym.dtos.LoginDTO;
 import org.oscar.gym.dtos.request.RequestTrainer;
+import org.oscar.gym.dtos.request.temp.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
@@ -48,9 +49,10 @@ public class TrainerController {
         service.assignTrainee(dto,userTrainer,userTrainee);
     }
 
-    @PostMapping("/trainer/update/{id}")
-    public TrainerResponsetemp updateActiveTrainee(@PathVariable long id){
-        return service.activeOrDeactivateTrainer(id);
+    @PatchMapping ("/trainer/update/{id}")
+    public ResponseEntity<?> updateActiveTrainee(@RequestBody UserActivateDeActivate dto){
+        service.activeOrDeactivateTrainer(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("trainer/change")
