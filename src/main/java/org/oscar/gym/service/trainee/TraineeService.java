@@ -8,6 +8,7 @@ import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
 import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
 import org.oscar.gym.entity.Trainee;
+import org.oscar.gym.exception.TraineeNotFoundException;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
@@ -33,14 +34,11 @@ public class TraineeService implements ITraineeService  {
     }
 
     public TraineeResponseExtend findTrainee(String username){
-        try {
             Trainee trainee = repository.findEntity(username);
-            return mapper.mapTraineeResponseGet(trainee);
-        }catch (Exception e) {
-            log.info("Does not found trainee with this username "+username);
+            if(trainee==null){
+                throw  new TraineeNotFoundException("trainee not found with this username "+ username);
             }
-        return null;
-
+            return mapper.mapTraineeResponseGet(trainee);
     }
 
     public TraineeResponseExtend updateTrainee(TraineeUpdateRequest dto, long id) {

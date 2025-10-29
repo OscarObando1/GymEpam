@@ -11,6 +11,7 @@ import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
 import org.oscar.gym.entity.Trainer;
+import org.oscar.gym.exception.TrainerNotFoundException;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
@@ -39,13 +40,12 @@ public class TrainerService implements ITrainerService{
     }
 
     public TrainerResponseExtend findTrainer(String username){
-         try {
-                    Trainer trainer = repository.findEntity(username);
-                    return mapper.mapTrainerResponseGetMethod(trainer);
-                }catch (Exception e) {
-                    log.info("Does not found trainer with this username "+username);
-                    }
-                return null;
+        Trainer trainer = repository.findEntity(username);
+        if(trainer==null){
+            throw new TrainerNotFoundException("trainee not found with this username "+ username);
+        }
+        return mapper.mapTrainerResponseGetMethod(trainer);
+
 
     }
     @Override

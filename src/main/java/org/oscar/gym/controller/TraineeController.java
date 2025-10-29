@@ -1,5 +1,6 @@
 package org.oscar.gym.controller;
 
+import jakarta.validation.Valid;
 import org.oscar.gym.dtos.ChangePassDTO;
 import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
@@ -27,7 +28,7 @@ public class TraineeController {
     }
 
     @PostMapping("/trainee")
-    public ResponseEntity<TraineeRegistrationResponse> createTrainee(@RequestBody TraineeRegistrationRequest dto){
+    public ResponseEntity<TraineeRegistrationResponse> createTrainee(@Valid @RequestBody TraineeRegistrationRequest dto){
         return new ResponseEntity<>(traineeService.saveTrainee(dto), HttpStatus.CREATED);
     }
 

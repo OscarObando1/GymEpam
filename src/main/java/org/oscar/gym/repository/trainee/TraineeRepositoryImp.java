@@ -48,7 +48,7 @@ public class TraineeRepositoryImp implements TraineeRepository {
                     .getSingleResult();
 
         }catch (Exception e){
-            log.info("trainee not found with this "+username);
+            log.info("trainee not found with this username"+username);
         }
         return trainee;
     }

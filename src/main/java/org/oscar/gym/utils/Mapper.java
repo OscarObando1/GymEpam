@@ -63,6 +63,7 @@ public class Mapper {
 
     public TraineeResponseExtend mapTraineeResponseGet(Trainee trainee){
         TraineeResponseExtend response = new TraineeResponseExtend();
+        response.setUsername(trainee.getUsername());
         response.setFirstName(trainee.getFirstName());
         response.setLastName(trainee.getLastName());
         response.setDateOfBirth(trainee.getDateOfBirth());
