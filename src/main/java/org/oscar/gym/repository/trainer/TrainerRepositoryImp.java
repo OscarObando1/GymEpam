@@ -147,18 +147,20 @@ public class TrainerRepositoryImp  implements TrainerRepository{
             throw new RuntimeException("trainee not found with username "+dto.getUsername());
         }
         try {
-            if(trainer.getIsActive()&&dto.isActive()){
+            if(trainer.getIsActive()&&dto.getIsActive()){
                 log.info("trainer is already active");
             }
-            if(trainer.getIsActive()&& !dto.isActive()){
+            if(trainer.getIsActive()&& !dto.getIsActive()){
+                trainer.setIsActive(false);
                 entityManager.merge(trainer);
                 log.info("trainer is deactivated");
             }
-            if(!trainer.getIsActive()&&dto.isActive()){
+            if(!trainer.getIsActive()&&dto.getIsActive()){
+                trainer.setIsActive(true);
                 entityManager.merge(trainer);
                 log.info("trainer is active");
             }
-            if(!trainer.getIsActive()&& !dto.isActive()){
+            if(!trainer.getIsActive()&& !dto.getIsActive()){
                 log.info("trainer is already deactivated");
             }
 

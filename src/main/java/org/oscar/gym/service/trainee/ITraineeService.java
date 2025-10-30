@@ -12,7 +12,7 @@ public interface ITraineeService {
 
    TraineeResponseExtend findTrainee(String username);
 
-   TraineeResponseExtend updateTrainee(TraineeUpdateRequest dto, long id);
+   TraineeResponseExtend updateTrainee(TraineeUpdateRequest dto);
 
    void deleteTrainee(String username);
 

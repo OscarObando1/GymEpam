@@ -9,6 +9,7 @@ import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.User;
+import org.oscar.gym.exception.TraineeNotFoundException;
 import org.oscar.gym.utils.IGenerator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
@@ -55,23 +56,23 @@ public class TraineeRepositoryImp implements TraineeRepository {
 
     @Override
     @Transactional
-    public Trainee updateEntity(TraineeUpdateRequest dto, long id) {
+    public Trainee updateEntity(TraineeUpdateRequest dto) {
         Trainee trainee = null;
-        trainee = entityManager.find(Trainee.class,id);
+        trainee = findEntity(dto.getUsername());
         if(trainee==null){
-            throw new RuntimeException("Trainee not found with this id "+id);
+            throw  new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
         }
         trainee.setFirstName(dto.getFirstName());
         trainee.setLastName(dto.getLastName());
         trainee.setUsername(generator.createUser(dto.getFirstName(),dto.getLastName()));
         trainee.setAddress(dto.getAddress());
         trainee.setDateOfBirth(dto.getDateOfBirth());
-        trainee.setIsActive(dto.isActive());
+        trainee.setIsActive(dto.getIsActive());
         try {
             entityManager.merge(trainee);
         }catch (Exception e){
             e.printStackTrace();
-            log.debug("something during update happend");
+            log.debug("something during update happened");
         }
           log.info("trainee updated");
           return trainee;
@@ -104,18 +105,20 @@ public class TraineeRepositoryImp implements TraineeRepository {
             throw new RuntimeException("trainee not found with username "+dto.getUsername());
         }
         try {
-           if(trainee.getIsActive()&&dto.isActive()){
+           if(trainee.getIsActive()&&dto.getIsActive()){
                log.info("trainee is already active");
            }
-           if(trainee.getIsActive()&& !dto.isActive()){
+           if(trainee.getIsActive()&& !dto.getIsActive()){
+               trainee.setIsActive(false);
                entityManager.merge(trainee);
                log.info("trainee is deactivated");
            }
-            if(!trainee.getIsActive()&&dto.isActive()){
+            if(!trainee.getIsActive()&&dto.getIsActive()){
+                trainee.setIsActive(true);
                 entityManager.merge(trainee);
                 log.info("trainee is active");
             }
-            if(!trainee.getIsActive()&& !dto.isActive()){
+            if(!trainee.getIsActive()&& !dto.getIsActive()){
                 log.info("trainee is already deactivated");
             }
 

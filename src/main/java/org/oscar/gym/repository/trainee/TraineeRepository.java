@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public interface TraineeRepository {
     Trainee saveEntity(TraineeRegistrationRequest dto);
     Trainee findEntity(String username );
-    Trainee updateEntity(TraineeUpdateRequest dto, long id);
+    Trainee updateEntity(TraineeUpdateRequest dto);
     void deleteEntity(String username);
     void changeActive(UserActivateDeActivate dto);
     void updatePass(ChangePassDTO dto);

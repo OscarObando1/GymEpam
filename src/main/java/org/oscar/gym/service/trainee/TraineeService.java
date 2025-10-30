@@ -41,14 +41,12 @@ public class TraineeService implements ITraineeService  {
             return mapper.mapTraineeResponseGet(trainee);
     }
 
-    public TraineeResponseExtend updateTrainee(TraineeUpdateRequest dto, long id) {
-        try {
-            Trainee trainee = repository.updateEntity(dto, id);
-            return mapper.mapTraineeResponseGet(trainee);
-        } catch (Exception e) {
-            log.info("Trainee not found with id " + id);
+    public TraineeResponseExtend updateTrainee(TraineeUpdateRequest dto) {
+        Trainee trainee = repository.updateEntity(dto);
+        if(trainee==null){
+            throw  new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
         }
-        return null;
+        return mapper.mapTraineeResponseGet(trainee);
     }
 
     public void deleteTrainee(String username){

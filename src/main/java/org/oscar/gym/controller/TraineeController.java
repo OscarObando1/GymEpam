@@ -32,9 +32,9 @@ public class TraineeController {
         return new ResponseEntity<>(traineeService.saveTrainee(dto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/trainee/{id}")
-    public ResponseEntity<TraineeResponseExtend> updateTrainee(@RequestBody TraineeUpdateRequest dto, @PathVariable long id){
-       return new ResponseEntity<>(traineeService.updateTrainee(dto,id),HttpStatus.OK);
+    @PutMapping("/trainee")
+    public ResponseEntity<TraineeResponseExtend> updateTrainee(@Valid @RequestBody TraineeUpdateRequest dto){
+       return new ResponseEntity<>(traineeService.updateTrainee(dto),HttpStatus.OK);
     }
 
     @DeleteMapping("/trainee")
@@ -43,7 +43,7 @@ public class TraineeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping("/trainee/update/{id}")
+    @PatchMapping("/trainee/update")
     public ResponseEntity<?> updateActiveTrainee(@RequestBody UserActivateDeActivate dto){
         traineeService.activeOrDeactivateTraine(dto);
         return new ResponseEntity<>(HttpStatus.OK);

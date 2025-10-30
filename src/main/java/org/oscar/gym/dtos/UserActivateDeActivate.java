@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class UserActivateDeActivate {
     private String username;
-    private boolean isActive;
+    private Boolean isActive;
 }
