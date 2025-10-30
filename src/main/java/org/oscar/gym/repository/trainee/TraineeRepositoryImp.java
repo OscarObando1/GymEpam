@@ -6,13 +6,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.oscar.gym.dtos.ChangePassDTO;
 import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
+import org.oscar.gym.dtos.request.trainee.TraineeUpdateListTrainerRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.entity.Trainee;
+import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.User;
 import org.oscar.gym.exception.TraineeNotFoundException;
 import org.oscar.gym.utils.IGenerator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -80,7 +85,7 @@ public class TraineeRepositoryImp implements TraineeRepository {
 
     @Override
     @Transactional
-    public void deleteEntity(String username) {
+    public Trainee deleteEntity(String username) {
         Trainee trainee = null;
         String jpql = "SELECT u FROM User u WHERE u.username = :username";
         try {
@@ -93,7 +98,7 @@ public class TraineeRepositoryImp implements TraineeRepository {
         }catch (Exception e){
             log.info("Does not found trainee with this username "+username);
         }
-
+       return trainee;
     }
 
     @Override
@@ -138,6 +143,30 @@ public class TraineeRepositoryImp implements TraineeRepository {
         entityManager.merge(trainee);
 
 
+    }
+    @Override
+    @Transactional
+    public Trainee updateListTrainer(String username, List<Trainer> list){
+        Trainee trainee = null;
+        trainee = findEntity(username);
+
+        for (Trainer oldTrainer : new ArrayList<>(trainee.getTrainers())) {
+            oldTrainer.getTrainees().remove(trainee);
+        }
+
+        trainee.getTrainers().clear();
+
+        for (Trainer newTrainer : list) {
+            trainee.getTrainers().add(newTrainer);
+            newTrainer.getTrainees().add(trainee);
+        }
+        try {
+            entityManager.merge(trainee);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.debug("something during update happened");
+        }
+        return trainee;
     }
 
 

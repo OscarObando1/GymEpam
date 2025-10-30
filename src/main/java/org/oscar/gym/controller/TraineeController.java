@@ -4,14 +4,20 @@ import jakarta.validation.Valid;
 import org.oscar.gym.dtos.ChangePassDTO;
 import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
+import org.oscar.gym.dtos.request.trainee.TraineeUpdateListTrainerRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
 import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
+import org.oscar.gym.dtos.response.trainer.TrainerResponse;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.service.trainee.ITraineeService;
+import org.oscar.gym.service.trainee.TraineeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class TraineeController {
@@ -35,6 +41,11 @@ public class TraineeController {
     @PutMapping("/trainee")
     public ResponseEntity<TraineeResponseExtend> updateTrainee(@Valid @RequestBody TraineeUpdateRequest dto){
        return new ResponseEntity<>(traineeService.updateTrainee(dto),HttpStatus.OK);
+    }
+
+    @PutMapping("/trainee/list-trainer")
+    public ResponseEntity<List<TrainerResponse>> updateListTrainer(@RequestBody TraineeUpdateListTrainerRequest dto){
+        return new ResponseEntity<>(traineeService.updateListOfTrainer(dto),HttpStatus.OK);
     }
 
     @DeleteMapping("/trainee")

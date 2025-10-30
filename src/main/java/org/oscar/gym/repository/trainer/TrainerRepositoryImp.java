@@ -13,6 +13,7 @@ import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.TrainingType;
 import org.oscar.gym.entity.User;
+import org.oscar.gym.exception.TraineeNotFoundException;
 import org.oscar.gym.utils.IGenerator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
@@ -67,16 +68,19 @@ public class TrainerRepositoryImp  implements TrainerRepository{
         }catch (Exception e){
             log.info("trainee not found with this "+username);
         }
+        if(trainer==null){
+            throw new TraineeNotFoundException("Trainer not found with this username "+username);
+        }
         return trainer;
     }
 
     @Override
     @Transactional
-    public Trainer updateEntity(TrainerUpdateRequest dto, long id) {
+    public Trainer updateEntity(TrainerUpdateRequest dto) {
         Trainer trainer = null;
-        trainer = entityManager.find(Trainer.class,id);
+        trainer = findEntity(dto.getUsername());
         if(trainer==null){
-            throw new RuntimeException("Trainee not found with this id "+id);
+            throw new TraineeNotFoundException("Trainer not found with this username "+dto.getUsername());
         }
         trainer.setFirstName(dto.getFirstName());
         trainer.setLastName(dto.getLastName());

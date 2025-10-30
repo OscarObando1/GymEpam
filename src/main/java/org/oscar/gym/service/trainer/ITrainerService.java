@@ -16,7 +16,7 @@ public interface ITrainerService {
 
     TrainerResponseExtend findTrainer(String username);
 
-    TrainerResponseExtend updateTrainer(TrainerUpdateRequest dto, long id);
+    TrainerResponseExtend updateTrainer(TrainerUpdateRequest dto);
 
 //    void deleteTrainer(LoginDTO dto,String username);
 //

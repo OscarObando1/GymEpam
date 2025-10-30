@@ -49,14 +49,13 @@ public class TrainerService implements ITrainerService{
 
     }
     @Override
-    public TrainerResponseExtend updateTrainer(TrainerUpdateRequest dto, long id) {
-        try {
-            Trainer trainer = repository.updateEntity(dto, id);
-            return mapper.mapTrainerResponseGetMethod(trainer);
-        } catch (Exception e) {
-            log.info("Trainer not found with id " + id);
+    public TrainerResponseExtend updateTrainer(TrainerUpdateRequest dto) {
+            Trainer trainer = repository.updateEntity(dto);
+        if(trainer==null){
+            throw new TrainerNotFoundException("trainee not found with this username "+ dto.getUsername());
         }
-        return null;
+            return mapper.mapTrainerResponseGetMethod(trainer);
+
     }
 
 //    @Override

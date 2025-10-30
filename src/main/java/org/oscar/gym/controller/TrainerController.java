@@ -37,9 +37,9 @@ public class TrainerController {
         return new ResponseEntity<>(service.saveTrainer(dto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/trainer/{id}")
-    public ResponseEntity<TrainerResponseExtend>  updateTrainer(@RequestBody TrainerUpdateRequest dto, @PathVariable long id){
-        return new ResponseEntity<>(service.updateTrainer(dto,id),HttpStatus.OK);
+    @PutMapping("/trainer")
+    public ResponseEntity<TrainerResponseExtend>  updateTrainer(@RequestBody TrainerUpdateRequest dto){
+        return new ResponseEntity<>(service.updateTrainer(dto),HttpStatus.OK);
     }
 
 //    @DeleteMapping("/trainer")
