@@ -11,6 +11,8 @@ import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.Training;
 import org.oscar.gym.entity.TrainingType;
+import org.oscar.gym.exception.TraineeNotFoundException;
+import org.oscar.gym.exception.TrainerNotFoundException;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.springframework.stereotype.Component;
@@ -39,17 +41,19 @@ public class TrainingRepositoryImp implements TrainingRepository{
     @Transactional
     public void createTraining(TrainingDTO dto) {
         Trainer trainer= null;
-        try {
-            trainer=trainerRepository.findEntity(dto.getTrainerUsername());
-        }catch (Exception e){
-            throw new NoSuchElementException("trainer not found with the user "+dto.getTrainerUsername());
+        trainer=trainerRepository.findEntity(dto.getTrainerUsername());
+        if(trainer==null){
+            throw new TrainerNotFoundException("trainer not found with this username "+ dto.getTrainerUsername());
         }
         Trainee trainee =null;
-        try {
-            trainee=traineeRepository.findEntity(dto.getTraineeUsername());
-        }catch (Exception e){
-            throw new NoSuchElementException("trainee not found with the user " +dto.getTraineeUsername());
+        trainee=traineeRepository.findEntity(dto.getTraineeUsername());
+        if(trainee==null){
+            throw new TraineeNotFoundException("trainee not found with this username "+ dto.getTraineeUsername());
         }
+
+        trainer.getTrainees().add(trainee);
+        trainee.getTrainers().add(trainer);
+
 
         Training training = new Training();
         training.setTrainer(trainer);
@@ -126,6 +130,11 @@ public class TrainingRepositoryImp implements TrainingRepository{
     }
 
     public List<Training> getTraineeTrainings(TraineeTrainingsListResquest dto) {
+        Trainee trainee = traineeRepository.findEntity(dto.getUsername());
+        if(trainee==null){
+            throw new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
+        }
+
         StringBuilder jpql = new StringBuilder(
                 "SELECT tr FROM Training tr WHERE tr.trainee.username = :username"
         );
@@ -160,6 +169,11 @@ public class TrainingRepositoryImp implements TrainingRepository{
     }
 
     public List<Training> getTrainerTrainings(TrainerTrainingsListRequest dto) {
+        Trainer trainer = trainerRepository.findEntity(dto.getUsername());
+        if(trainer==null){
+            throw new TrainerNotFoundException("trainer not found with this username "+ dto.getUsername());
+        }
+
         StringBuilder jpql = new StringBuilder(
                 "SELECT tr FROM Training tr WHERE tr.trainer.username = :username"
         );

@@ -1,9 +1,12 @@
 package org.oscar.gym.controller;
 
+import jakarta.validation.Valid;
 import org.oscar.gym.dtos.request.training.TraineeTrainingsListResquest;
 import org.oscar.gym.dtos.request.training.TrainerTrainingsListRequest;
 import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.dtos.response.TrainingResponse;
+import org.oscar.gym.dtos.response.training.TraineeTrainingsListResponse;
+import org.oscar.gym.dtos.response.training.TrainerTrainingsListResponse;
 import org.oscar.gym.dtos.response.training.TrainingResponseAll;
 import org.oscar.gym.entity.Training;
 import org.oscar.gym.repository.training.TrainingRepositoryImp;
@@ -45,13 +48,13 @@ public class TrainingController {
         return new ResponseEntity<>(service.listTypes(), HttpStatus.OK);
     }
 
-//    @GetMapping("/training/list-trainee")
-//    public ResponseEntity<List<Training>> listTrainingTrainee(@RequestBody TraineeTrainingsListResquest dto){
-//        return new ResponseEntity<>(repo.getTraineeTrainings(dto),HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/training/list-trainer")
-//    public ResponseEntity<List<Training>> listTrainingTrainer(@RequestBody TrainerTrainingsListRequest dto){
-//        return new ResponseEntity<>(repo.getTrainerTrainings(dto),HttpStatus.OK);
-//    }
+    @GetMapping("/training/list-trainee/trainings")
+    public ResponseEntity<List<TraineeTrainingsListResponse>> listTrainingTrainee(@Valid @RequestBody TraineeTrainingsListResquest dto){
+        return new ResponseEntity<>(service.getTrainingListTrainee(dto),HttpStatus.OK);
+    }
+
+    @GetMapping("/training/list-trainer/trainings")
+    public ResponseEntity<List<TrainerTrainingsListResponse>> listTrainingTrainer(@Valid @RequestBody TrainerTrainingsListRequest dto){
+        return new ResponseEntity<>(service.getTrainingListTrainer(dto),HttpStatus.OK);
+    }
 }

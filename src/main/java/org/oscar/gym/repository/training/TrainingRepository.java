@@ -1,5 +1,7 @@
 package org.oscar.gym.repository.training;
 
+import org.oscar.gym.dtos.request.training.TraineeTrainingsListResquest;
+import org.oscar.gym.dtos.request.training.TrainerTrainingsListRequest;
 import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.entity.Training;
 import org.oscar.gym.entity.TrainingType;
@@ -13,4 +15,6 @@ public interface TrainingRepository {
     public List<Training> getTrainingWithTrainee(String username);
     public List<Training> getTrainingWithTraineer(String username);
     public List<TrainingType> getTypes();
+    List<Training> getTraineeTrainings(TraineeTrainingsListResquest dto);
+    List<Training> getTrainerTrainings(TrainerTrainingsListRequest dto);
 }

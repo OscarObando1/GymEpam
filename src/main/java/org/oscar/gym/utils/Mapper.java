@@ -12,6 +12,8 @@ import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
+import org.oscar.gym.dtos.response.training.TraineeTrainingsListResponse;
+import org.oscar.gym.dtos.response.training.TrainerTrainingsListResponse;
 import org.oscar.gym.dtos.response.training.TrainingResponseAll;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
@@ -143,6 +145,26 @@ public class Mapper {
         TrainingResponseAll response = new TrainingResponseAll();
         response.setTrainingType(trainingType.getName().name());
         response.setTrainingTypeId(trainingType.getId());
+        return response;
+    }
+
+    public TraineeTrainingsListResponse mapTrainigListTrainee(Training training){
+        TraineeTrainingsListResponse response = new TraineeTrainingsListResponse();
+        response.setTrainingName(training.getName());
+        response.setDate(training.getTrainingDate().toString());
+        response.setType(training.getTrainingType().getName().name());
+        response.setTrainerName(training.getTrainer().getFirstName());
+        response.setDuration(training.getDurationTraining().toString());
+        return response;
+    }
+
+    public TrainerTrainingsListResponse mapTrainigListTrainer(Training training){
+        TrainerTrainingsListResponse response = new TrainerTrainingsListResponse();
+        response.setTrainingName(training.getName());
+        response.setDate(training.getTrainingDate().toString());
+        response.setType(training.getTrainingType().getName().name());
+        response.setDuration(training.getDurationTraining().toString());
+        response.setTraineeName(training.getTrainee().getFirstName());
         return response;
     }
 
