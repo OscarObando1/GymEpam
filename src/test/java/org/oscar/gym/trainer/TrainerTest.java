@@ -1,24 +1,9 @@
 package org.oscar.gym.trainer;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.oscar.gym.dtos.LoginDTO;
-import org.oscar.gym.dtos.TrainerDTO;
-import org.oscar.gym.dtos.response.TrainerResponsetemp;
-import org.oscar.gym.entity.Trainer;
-import org.oscar.gym.entity.TrainingType;
-import org.oscar.gym.enums.TypeTraining;
-import org.oscar.gym.repository.trainer.TrainerRepositoryImp;
-import org.oscar.gym.security.Authenticator;
-import org.oscar.gym.service.trainer.TrainerService;
-import org.oscar.gym.utils.Mapper;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 
 @ExtendWith(MockitoExtension.class)
 public class TrainerTest {
