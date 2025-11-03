@@ -10,8 +10,11 @@ import org.oscar.gym.dtos.request.trainer.TrainerUpdateRequest;
 import org.oscar.gym.dtos.response.trainer.TrainerRegistrationResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponse;
 import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
+import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
+import org.oscar.gym.exception.TraineeNotFoundException;
 import org.oscar.gym.exception.TrainerNotFoundException;
+import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
@@ -22,12 +25,14 @@ import java.util.List;
 @Slf4j
 @Component
 public class TrainerService implements ITrainerService{
+    private final TraineeRepository traineeRepository;
     private final TrainerRepository repository;
     private final Mapper mapper;
     private final IAuthenticator authenticator;
 
 
-    public TrainerService(TrainerRepository repository, Mapper mapper, IAuthenticator authenticator) {
+    public TrainerService(TraineeRepository traineeRepository, TrainerRepository repository, Mapper mapper, IAuthenticator authenticator) {
+        this.traineeRepository = traineeRepository;
         this.repository = repository;
         this.mapper = mapper;
         this.authenticator = authenticator;
@@ -82,16 +87,21 @@ public class TrainerService implements ITrainerService{
 
     @Override
     public void updatePassword(ChangePassDTO dto) {
-        if(!authenticator.isAuthorized(dto.getUsername(), dto.getOldPass())){
-            throw new UnsupportedOperationException("Sorry user not authorized");
-        }
         repository.updatePass(dto);
     }
 
     @Override
     public List<TrainerResponse> trainerWithoutTrainee(String username) {
+        Trainee trainee = traineeRepository.findEntity(username);
+        if(trainee==null){
+            throw new TraineeNotFoundException("trainee not found with this username "+username);
+        }
         List<Trainer> list = null;
         list= repository.getTrainerWithoutTrainee(username);
+        if(list==null){
+            throw new TraineeNotFoundException("trainee not found with this username "+username);
+        }
+
         return list.stream().map(e->mapper.mapTrainerResponseGet(e)).toList();
     }
 }
