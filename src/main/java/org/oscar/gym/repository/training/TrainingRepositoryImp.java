@@ -58,10 +58,6 @@ public class TrainingRepositoryImp implements TrainingRepository{
     }
 
     public List<Training> getTraineeTrainings(TraineeTrainingsListResquest dto) {
-        Trainee trainee = traineeRepository.findEntity(dto.getUsername());
-        if(trainee==null){
-            throw new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
-        }
 
         StringBuilder jpql = new StringBuilder(
                 "SELECT tr FROM Training tr WHERE tr.trainee.username = :username"
@@ -97,11 +93,6 @@ public class TrainingRepositoryImp implements TrainingRepository{
     }
 
     public List<Training> getTrainerTrainings(TrainerTrainingsListRequest dto) {
-        Trainer trainer = trainerRepository.findEntity(dto.getUsername());
-        if(trainer==null){
-            throw new TrainerNotFoundException("trainer not found with this username "+ dto.getUsername());
-        }
-
         StringBuilder jpql = new StringBuilder(
                 "SELECT tr FROM Training tr WHERE tr.trainer.username = :username"
         );

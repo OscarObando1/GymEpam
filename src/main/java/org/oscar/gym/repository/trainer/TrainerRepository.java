@@ -13,10 +13,7 @@ import java.util.List;
 public interface TrainerRepository {
     Trainer saveEntity(Trainer entity);
     Trainer findEntity(String username );
-    Trainer updateEntity(TrainerUpdateRequest dto);
+    Trainer updateEntity(Trainer entity);
     void deleteEntity(String username);
-    void assignTraineeEntity(String userTrainer,String userTrainee);
-    void changeActive(UserActivateDeActivate dto);
-    void updatePass(ChangePassDTO dto);
     public List<Trainer> getTrainerWithoutTrainee(String username);
 }

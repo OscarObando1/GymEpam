@@ -56,8 +56,7 @@ public class TraineeTest {
     @Test
     public void createTrainee() {
         when(mapper.mapTraineeEntity(requestSave)).thenReturn(trainee);
-        when(repository.saveEntity(any(Trainee.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(repository.saveEntity(trainee)).thenReturn(trainee);
         traineeService.saveTrainee(requestSave);
         verify(repository, times(1)).saveEntity(any(Trainee.class));
     }

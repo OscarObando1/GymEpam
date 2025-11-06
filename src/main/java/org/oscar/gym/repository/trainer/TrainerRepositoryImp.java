@@ -57,33 +57,17 @@ public class TrainerRepositoryImp  implements TrainerRepository{
                     .setParameter("username", username)
                     .getSingleResult();
         }catch (Exception e){
-            log.info("trainee not found with this "+username);
-        }
-        if(trainer==null){
-            throw new TraineeNotFoundException("Trainer not found with this username "+username);
+            log.info("trainer not found with this "+username);
         }
         return trainer;
     }
 
     @Override
     @Transactional
-    public Trainer updateEntity(TrainerUpdateRequest dto) {
-        Trainer trainer = null;
-        trainer = findEntity(dto.getUsername());
-        if(trainer==null){
-            throw new TraineeNotFoundException("Trainer not found with this username "+dto.getUsername());
-        }
-        trainer.setFirstName(dto.getFirstName());
-        trainer.setLastName(dto.getLastName());
-        trainer.setUsername(dto.getUsername());
-        try {
-            entityManager.merge(trainer);
-        }catch (Exception e){
-            e.printStackTrace();
-            log.debug("something during update happend");
-        }
+    public Trainer updateEntity(Trainer entity) {
+        entityManager.merge(entity);
         log.info("trainer updated");
-        return trainer;
+        return entity;
     }
 
     @Override
@@ -104,74 +88,6 @@ public class TrainerRepositoryImp  implements TrainerRepository{
 
     }
 
-    @Override
-    @Transactional
-    public void assignTraineeEntity(String userTrainer,String userTrainee){
-        Trainer trainer = null;
-        String jpql = "SELECT u FROM User u WHERE u.username = :username";
-
-        try {
-            trainer = (Trainer) entityManager.createQuery(jpql, User.class)
-                    .setParameter("username", userTrainer )
-                    .getSingleResult();
-        } catch (Exception e) {
-            log.info("trainer not found with this username "+ userTrainer);
-        }
-        Trainee trainee = null;
-        try {
-            String jpql2 = "SELECT u FROM User u WHERE u.username = :username";
-            trainee = (Trainee) entityManager.createQuery(jpql, User.class)
-                    .setParameter("username", userTrainee )
-                    .getSingleResult();
-        } catch (Exception e) {
-            log.info("trainee not found with this username "+userTrainee);
-        }
-
-        trainer.getTrainees().add(trainee);
-        trainee.getTrainers().add(trainer);
-        entityManager.merge(trainer);
-        entityManager.merge(trainee);
-        log.info("The trainer "+trainer.getUsername()+ " selected the trainee " +trainee.getUsername());
-    }
-
-    @Override
-    public void changeActive(UserActivateDeActivate dto) {
-        Trainer trainer = null;
-        trainer = findEntity(dto.getUsername());
-        if(trainer==null){
-            throw new RuntimeException("trainee not found with username "+dto.getUsername());
-        }
-        try {
-            if(trainer.getIsActive()&&dto.getIsActive()){
-                log.info("trainer is already active");
-            }
-            if(trainer.getIsActive()&& !dto.getIsActive()){
-                trainer.setIsActive(false);
-                entityManager.merge(trainer);
-                log.info("trainer is deactivated");
-            }
-            if(!trainer.getIsActive()&&dto.getIsActive()){
-                trainer.setIsActive(true);
-                entityManager.merge(trainer);
-                log.info("trainer is active");
-            }
-            if(!trainer.getIsActive()&& !dto.getIsActive()){
-                log.info("trainer is already deactivated");
-            }
-
-        }catch (Exception e){
-            log.debug("something happened during change activity {}", e.getMessage(), e);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void updatePass(ChangePassDTO dto) {
-        Trainer trainer = null;
-        trainer= findEntity(dto.getUsername());
-        trainer.setPassword(dto.getNewPass());
-        entityManager.merge(trainer);
-    }
 
     @Override
     @Transactional

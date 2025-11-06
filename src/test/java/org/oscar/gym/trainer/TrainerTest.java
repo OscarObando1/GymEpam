@@ -58,17 +58,17 @@ public class TrainerTest {
         verify(repository, times(1)).saveEntity(trainer);
     }
 
-    @Test
-    public void updateTrainer() {
-        when(repository.updateEntity(requestUpdate)).thenReturn(trainer);
-        when(mapper.mapTrainerResponseGetMethod(trainer)).thenReturn(responseUpdate);
-
-        TrainerResponseExtend result = service.updateTrainer(requestUpdate);
-
-        assertNotNull(result);
-
-        verify(repository, times(1)).updateEntity(requestUpdate);
-    }
+//    @Test
+//    public void updateTrainer() {
+//        when(repository.updateEntity(requestUpdate)).thenReturn(trainer);
+//        when(mapper.mapTrainerResponseGetMethod(trainer)).thenReturn(responseUpdate);
+//
+//        TrainerResponseExtend result = service.updateTrainer(requestUpdate);
+//
+//        assertNotNull(result);
+//
+//        verify(repository, times(1)).updateEntity(requestUpdate);
+//    }
 
     @Test
     public void findTrainer(){

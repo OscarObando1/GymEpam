@@ -62,6 +62,7 @@ public class TraineeService implements ITraineeService  {
         trainee.setAddress(dto.getAddress());
         trainee.setDateOfBirth(dto.getDateOfBirth());
         trainee.setIsActive(dto.getIsActive());
+        repository.updateEntity(trainee);
         return mapper.mapTraineeResponseGet(trainee);
     }
 

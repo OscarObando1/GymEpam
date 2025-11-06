@@ -69,6 +69,10 @@ public class TrainigService implements ITrainingService{
 
     @Override
     public List<TraineeTrainingsListResponse> getTrainingListTrainee(TraineeTrainingsListResquest dto) {
+        Trainee trainee = traineeRepository.findEntity(dto.getUsername());
+        if(trainee==null){
+            throw new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
+        }
         List<Training> list = null;
         list=repository.getTraineeTrainings(dto);
         if(list==null){
@@ -79,6 +83,10 @@ public class TrainigService implements ITrainingService{
 
     @Override
     public List<TrainerTrainingsListResponse> getTrainingListTrainer(TrainerTrainingsListRequest dto) {
+        Trainer trainer = trainerRepository.findEntity(dto.getUsername());
+        if(trainer==null){
+            throw new TrainerNotFoundException("trainer not found with this username "+ dto.getUsername());
+        }
         List<Training> list = null;
         list=repository.getTrainerTrainings(dto);
         if(list==null){
