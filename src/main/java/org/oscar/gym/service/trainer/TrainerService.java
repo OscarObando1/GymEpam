@@ -16,6 +16,7 @@ import org.oscar.gym.exception.TraineeNotFoundException;
 import org.oscar.gym.exception.TrainerNotFoundException;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
+import org.oscar.gym.repository.trainig_types.TrainingTypes;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
@@ -25,22 +26,24 @@ import java.util.List;
 @Slf4j
 @Component
 public class TrainerService implements ITrainerService{
+    private final TrainingTypes typeRespository;
     private final TraineeRepository traineeRepository;
     private final TrainerRepository repository;
     private final Mapper mapper;
-    private final IAuthenticator authenticator;
 
 
-    public TrainerService(TraineeRepository traineeRepository, TrainerRepository repository, Mapper mapper, IAuthenticator authenticator) {
+    public TrainerService(TrainingTypes typeRespository, TraineeRepository traineeRepository, TrainerRepository repository, Mapper mapper) {
+        this.typeRespository = typeRespository;
         this.traineeRepository = traineeRepository;
         this.repository = repository;
         this.mapper = mapper;
-        this.authenticator = authenticator;
     }
 
     @Override
     public TrainerRegistrationResponse saveTrainer(TrainerRegistrationRequest dto){
-        Trainer trainer= repository.saveEntity(dto);
+        Trainer trainer = mapper.mapTrainerEntity(dto);
+        trainer.setSpecialization(typeRespository.findType(dto.getSpecialization()));
+        repository.saveEntity(trainer);
         return mapper.mapTrainerResponse(trainer);
     }
 

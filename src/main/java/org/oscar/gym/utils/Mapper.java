@@ -26,6 +26,12 @@ import java.util.List;
 @Component
 public class Mapper {
 
+    private final IGenerator generator;
+
+    public Mapper(IGenerator generator) {
+        this.generator = generator;
+    }
+
 
     public Trainee mapTraineeExtend(TraineeDTO dto){
         Trainee trainee = new Trainee();
@@ -166,6 +172,19 @@ public class Mapper {
         response.setDuration(training.getDurationTraining().toString());
         response.setTraineeName(training.getTrainee().getFirstName());
         return response;
+    }
+
+    //=======================================================================================
+    //Mapper dto to Entity
+
+    public Trainer mapTrainerEntity(TrainerRegistrationRequest dto){
+        Trainer entity = new Trainer();
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setUsername(generator.createUser(dto.getFirstName(), dto.getLastName()));
+        entity.setPassword(generator.generatePass());
+        entity.setIsActive(true);
+        return entity;
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 public interface TrainerRepository {
-    Trainer saveEntity(TrainerRegistrationRequest dto);
+    Trainer saveEntity(Trainer entity);
     Trainer findEntity(String username );
     Trainer updateEntity(TrainerUpdateRequest dto);
     void deleteEntity(String username);

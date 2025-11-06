@@ -24,37 +24,28 @@ import java.util.List;
 @Component
 public class TrainerRepositoryImp  implements TrainerRepository{
     private final EntityManager entityManager;
-    private final Mapper mapper;
-    private final IGenerator generator;
+    private static final String queryTrainerWithtrianee = """
+                            SELECT t
+                            FROM Trainer t
+                            WHERE t.id NOT IN (
+                                SELECT tr.id
+                                FROM Trainee tn
+                                JOIN tn.trainers tr
+                                WHERE tn.username = :username
+                            )
+                        """;
 
-    public TrainerRepositoryImp(EntityManager entityManager, Mapper mapper, IGenerator generator) {
+    public TrainerRepositoryImp(EntityManager entityManager) {
         this.entityManager = entityManager;
-        this.mapper = mapper;
-        this.generator = generator;
     }
 
 
     @Override
     @Transactional
-    public Trainer saveEntity(TrainerRegistrationRequest dto) {
-
-        TrainingType type = null;
-        String jpql = "SELECT t FROM TrainingType t WHERE t.name = :name";
-
-
-        type = entityManager.createQuery(jpql, TrainingType.class)
-                .setParameter("name", dto.getSpecialization())
-                .getSingleResult();
-
-        Trainer trainer = mapper.mapTrainer(dto);
-        trainer.setUsername(generator.createUser(dto.getFirstName(), dto.getLastName()));
-        trainer.setPassword(generator.generatePass());
-        trainer.setSpecialization(type);
-
-
-            entityManager.persist(trainer);
-            log.info("Trainer saved "+trainer.getUsername());
-        return trainer;
+    public Trainer saveEntity(Trainer entity) {
+            entityManager.persist(entity);
+            log.info("Trainer saved "+entity.getUsername());
+        return entity;
     }
 
     @Override
@@ -169,8 +160,7 @@ public class TrainerRepositoryImp  implements TrainerRepository{
             }
 
         }catch (Exception e){
-            e.printStackTrace();
-            log.debug("something happened during change activity");
+            log.debug("something happened during change activity {}", e.getMessage(), e);
         }
     }
 
@@ -185,16 +175,8 @@ public class TrainerRepositoryImp  implements TrainerRepository{
 
     @Override
     @Transactional
-    public List<Trainer> getTrainerWithoutTrainee(String username){
-        return entityManager.createQuery(
-                        "SELECT t FROM Trainer t " +
-                                "WHERE t.id NOT IN (" +
-                                "   SELECT tr.id FROM Trainee tn " +
-                                "   JOIN tn.trainers tr " +
-                                "   WHERE tn.username = :username" +
-                                ")",
-                        Trainer.class
-                )
+    public List<Trainer> getTrainerWithoutTrainee(String username) {
+        return entityManager.createQuery(queryTrainerWithtrianee, Trainer.class)
                 .setParameter("username", username)
                 .getResultList();
     }

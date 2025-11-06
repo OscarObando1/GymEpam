@@ -51,11 +51,11 @@ public class TrainerTest {
 
     @Test
     public void createTrainer() {
-        when(repository.saveEntity(requestSave)).thenReturn(trainer);
+        when(repository.saveEntity(trainer)).thenReturn(trainer);
 
         service.saveTrainer(requestSave);
 
-        verify(repository, times(1)).saveEntity(requestSave);
+        verify(repository, times(1)).saveEntity(trainer);
     }
 
     @Test
