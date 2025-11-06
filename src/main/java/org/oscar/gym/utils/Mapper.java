@@ -4,6 +4,7 @@ package org.oscar.gym.utils;
 import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
+import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.dtos.response.trainee.TraineeResponse;
 import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.TrainingResponse;
@@ -184,6 +185,14 @@ public class Mapper {
         entity.setUsername(generator.createUser(dto.getFirstName(), dto.getLastName()));
         entity.setPassword(generator.generatePass());
         entity.setIsActive(true);
+        return entity;
+    }
+
+    public Training mapTrainingEntity(TrainingDTO dto){
+        Training entity = new Training();
+        entity.setName(dto.getName());
+        entity.setTrainingDate(dto.getDate());
+        entity.setDurationTraining(dto.getDuration());
         return entity;
     }
 

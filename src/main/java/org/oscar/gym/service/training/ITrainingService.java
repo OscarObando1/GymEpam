@@ -14,8 +14,6 @@ import java.util.List;
 @Component
 public interface ITrainingService {
     void createTraining(TrainingDTO dto);
-    List<TrainingResponse> listTrainingOfTrainee(String username);
-    List<TrainingResponse> listTrainingOfTrainer(String username);
     List<TrainingResponseAll> listTypes();
     List<TraineeTrainingsListResponse> getTrainingListTrainee(TraineeTrainingsListResquest dto);
     List<TrainerTrainingsListResponse> getTrainingListTrainer(TrainerTrainingsListRequest dto);

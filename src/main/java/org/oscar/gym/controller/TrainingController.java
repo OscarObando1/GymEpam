@@ -56,17 +56,6 @@ public class TrainingController {
     }
 
 
-
-//    @GetMapping("/training/trainee")
-//    public List<TrainingResponse> listTrainingTrainee(@RequestParam String username){
-//        return service.listTrainingOfTrainee(username);
-//    }
-//
-//    @GetMapping("/training/trainer")
-//    public List<TrainingResponse> listTrainingTrainer(@RequestParam String username){
-//        return service.listTrainingOfTrainer(username);
-//    }
-
     @Operation(
             method = "GET",
             summary = "get a list of  types training",
