@@ -39,7 +39,8 @@ public class TraineeService implements ITraineeService  {
     }
 
     public TraineeRegistrationResponse saveTrainee(TraineeRegistrationRequest dto){
-        Trainee trainee= repository.saveEntity(dto);
+        Trainee trainee= mapper.mapTraineeEntity(dto);
+        repository.saveEntity(trainee);
         return mapper.mapTraineeResponseCreate(trainee);
     }
 
@@ -52,10 +53,15 @@ public class TraineeService implements ITraineeService  {
     }
 
     public TraineeResponseExtend updateTrainee(TraineeUpdateRequest dto) {
-        Trainee trainee = repository.updateEntity(dto);
+        Trainee trainee = repository.findEntity(dto.getUsername());
         if(trainee==null){
             throw  new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
         }
+        trainee.setFirstName(dto.getFirstName());
+        trainee.setLastName(dto.getLastName());
+        trainee.setAddress(dto.getAddress());
+        trainee.setDateOfBirth(dto.getDateOfBirth());
+        trainee.setIsActive(dto.getIsActive());
         return mapper.mapTraineeResponseGet(trainee);
     }
 
@@ -68,26 +74,59 @@ public class TraineeService implements ITraineeService  {
 
     @Override
     public void activeOrDeactivateTraine(UserActivateDeActivate dto) {
-        try {
-            repository.changeActive(dto);
-        } catch (Exception e) {
-            log.info("Trainee not found with username " + dto.getUsername());
+        Trainee trainee= repository.findEntity(dto.getUsername());
+        if(trainee==null){
+            throw new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
+        }
+        if(trainee.getIsActive()&&dto.getIsActive()){
+            log.info("trainee is already active");
+        }
+        if(trainee.getIsActive()&& !dto.getIsActive()){
+            trainee.setIsActive(false);
+            repository.updateEntity(trainee);
+            log.info("trainee is deactivated");
+        }
+        if(!trainee.getIsActive()&&dto.getIsActive()){
+            trainee.setIsActive(true);
+            repository.updateEntity(trainee);
+            log.info("trainee is active");
+        }
+        if(!trainee.getIsActive()&& !dto.getIsActive()){
+            log.info("trainee is already deactivated");
         }
     }
 
     @Override
     public void updatePassword(ChangePassDTO dto) {
-        if(!authenticator.isAuthorized(dto.getUsername(), dto.getOldPass())){
-            throw new UnsupportedOperationException("Sorry user not authorized");
+        Trainee trainee= repository.findEntity(dto.getUsername());
+        if(trainee==null){
+            throw new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
         }
-        repository.updatePass(dto);
+        trainee.setPassword(dto.getNewPass());
+        repository.updateEntity(trainee);
     }
 
     public List<TrainerResponse> updateListOfTrainer(TraineeUpdateListTrainerRequest dto){
         List<Trainer> list = null;
-        Trainee trainee =null;
+        Trainee trainee= repository.findEntity(dto.getUsername());
+        if(trainee==null){
+            throw new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
+        }
+
         list = dto.getListUsernameTrainer().stream().map(e->repoTrainer.findEntity(e)).collect(Collectors.toCollection(ArrayList::new));
-        trainee= repository.updateListTrainer(dto.getUsername(), list);
+
+        for (Trainer oldTrainer : new ArrayList<>(trainee.getTrainers())) {
+            oldTrainer.getTrainees().remove(trainee);
+        }
+
+        trainee.getTrainers().clear();
+
+        for (Trainer newTrainer : list) {
+            trainee.getTrainers().add(newTrainer);
+            newTrainer.getTrainees().add(trainee);
+        }
+        repository.updateEntity(trainee);
+
         return trainee.getTrainers().stream().map(e->mapper.mapTrainerResponseGet(e)).collect(Collectors.toCollection(ArrayList::new));
     }
 

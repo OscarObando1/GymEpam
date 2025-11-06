@@ -52,24 +52,24 @@ public class TraineeTest {
 
     @Test
     public void createTrainee() {
-        when(repository.saveEntity(requestSave)).thenReturn(trainee);
+        when(repository.saveEntity(trainee)).thenReturn(trainee);
 
         traineeService.saveTrainee(requestSave);
 
-        verify(repository, times(1)).saveEntity(requestSave);
+        verify(repository, times(1)).saveEntity(trainee);
     }
 
     @Test
     public void updateTrainee() {
 
-        when(repository.updateEntity(requestUpdate)).thenReturn(trainee);
+        when(repository.updateEntity(trainee)).thenReturn(trainee);
         when(mapper.mapTraineeResponseGet(trainee)).thenReturn(responseUpdate);
 
         TraineeResponseExtend result = traineeService.updateTrainee(requestUpdate);
 
         assertNotNull(result);
 
-        verify(repository, times(1)).updateEntity(requestUpdate);
+        verify(repository, times(1)).updateEntity(trainee);
         verify(mapper, times(1)).mapTraineeResponseGet(trainee);
     }
 
