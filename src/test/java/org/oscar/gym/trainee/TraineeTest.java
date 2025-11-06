@@ -19,6 +19,7 @@ import org.oscar.gym.utils.Mapper;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
@@ -41,6 +42,7 @@ public class TraineeTest {
       private TraineeRegistrationRequest requestSave;
       private TraineeUpdateRequest requestUpdate;
       private TraineeResponseExtend responseUpdate;
+      private TraineeRegistrationResponse registrationResponse;
 
     @BeforeEach
     public void setUp() {
@@ -48,28 +50,28 @@ public class TraineeTest {
         requestSave = new TraineeRegistrationRequest("Oscar", "Obando", LocalDate.parse("1990-03-30"), "calle falsa");
         requestUpdate = new TraineeUpdateRequest("Oscar.Obando","Oscar","Obando",LocalDate.parse("1990-03-30"), "calle falsa",true);
         responseUpdate = new TraineeResponseExtend("Oscar.Obando","Oscar","Obando",LocalDate.parse("1990-03-30"), "calle falsa",true,null);
+        registrationResponse = new TraineeRegistrationResponse("Oscar.Obando","PASS123456");
     }
 
     @Test
     public void createTrainee() {
-        when(repository.saveEntity(trainee)).thenReturn(trainee);
-
+        when(mapper.mapTraineeEntity(requestSave)).thenReturn(trainee);
+        when(repository.saveEntity(any(Trainee.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
         traineeService.saveTrainee(requestSave);
-
-        verify(repository, times(1)).saveEntity(trainee);
+        verify(repository, times(1)).saveEntity(any(Trainee.class));
     }
 
     @Test
     public void updateTrainee() {
-
-        when(repository.updateEntity(trainee)).thenReturn(trainee);
+        when(repository.findEntity(requestUpdate.getUsername())).thenReturn(trainee);
         when(mapper.mapTraineeResponseGet(trainee)).thenReturn(responseUpdate);
 
         TraineeResponseExtend result = traineeService.updateTrainee(requestUpdate);
 
         assertNotNull(result);
 
-        verify(repository, times(1)).updateEntity(trainee);
+        verify(repository, times(1)).findEntity(requestUpdate.getUsername());
         verify(mapper, times(1)).mapTraineeResponseGet(trainee);
     }
 
