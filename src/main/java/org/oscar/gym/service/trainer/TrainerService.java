@@ -16,6 +16,7 @@ import org.oscar.gym.exception.TraineeNotFoundException;
 import org.oscar.gym.exception.TrainerNotFoundException;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
+import org.oscar.gym.repository.trainig_types.TrainingTypes;
 import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
@@ -25,29 +26,32 @@ import java.util.List;
 @Slf4j
 @Component
 public class TrainerService implements ITrainerService{
+    private final TrainingTypes typeRepository;
     private final TraineeRepository traineeRepository;
     private final TrainerRepository repository;
     private final Mapper mapper;
-    private final IAuthenticator authenticator;
 
 
-    public TrainerService(TraineeRepository traineeRepository, TrainerRepository repository, Mapper mapper, IAuthenticator authenticator) {
+
+    public TrainerService(TrainingTypes typeRespository, TraineeRepository traineeRepository, TrainerRepository repository, Mapper mapper) {
+        this.typeRepository = typeRespository;
         this.traineeRepository = traineeRepository;
         this.repository = repository;
         this.mapper = mapper;
-        this.authenticator = authenticator;
     }
 
     @Override
     public TrainerRegistrationResponse saveTrainer(TrainerRegistrationRequest dto){
-        Trainer trainer= repository.saveEntity(dto);
+        Trainer trainer = mapper.mapTrainerEntity(dto);
+        trainer.setSpecialization(typeRepository.findType(dto.getSpecialization()));
+        repository.saveEntity(trainer);
         return mapper.mapTrainerResponse(trainer);
     }
 
     public TrainerResponseExtend findTrainer(String username){
         Trainer trainer = repository.findEntity(username);
         if(trainer==null){
-            throw new TrainerNotFoundException("trainee not found with this username "+ username);
+            throw new TrainerNotFoundException("trainer not found with this username "+ username);
         }
         return mapper.mapTrainerResponseGetMethod(trainer);
 
@@ -55,10 +59,14 @@ public class TrainerService implements ITrainerService{
     }
     @Override
     public TrainerResponseExtend updateTrainer(TrainerUpdateRequest dto) {
-            Trainer trainer = repository.updateEntity(dto);
+        Trainer trainer = repository.findEntity(dto.getUsername());
         if(trainer==null){
-            throw new TrainerNotFoundException("trainee not found with this username "+ dto.getUsername());
+            throw  new TrainerNotFoundException("trainer not found with this username "+ dto.getUsername());
         }
+        trainer.setFirstName(dto.getFirstName());
+        trainer.setLastName(dto.getLastName());
+        trainer.setIsActive(dto.getIsActive());
+        repository.updateEntity(trainer);
             return mapper.mapTrainerResponseGetMethod(trainer);
 
     }
@@ -70,24 +78,41 @@ public class TrainerService implements ITrainerService{
 //        }
 //        repository.deleteEntity(username);
 //    }
-//
-//    @Override
-//    public void assignTrainee(LoginDTO dto,String userTrainer, String userTrainee){
-//        repository.assignTraineeEntity(userTrainer,userTrainee);
-//    }
+
 
     @Override
     public void activeOrDeactivateTrainer(UserActivateDeActivate dto) {
-        try {
-            repository.changeActive(dto);
-        } catch (Exception e) {
-            log.info("Trainer not found with username " + dto.getUsername());
+        Trainer trainer= repository.findEntity(dto.getUsername());
+        if(trainer==null){
+            throw new TrainerNotFoundException("trainer not found with this username "+ dto.getUsername());
         }
+        if(trainer.getIsActive()&&dto.getIsActive()){
+            log.info("trainer is already active");
+        }
+        if(trainer.getIsActive()&& !dto.getIsActive()){
+            trainer.setIsActive(false);
+            repository.updateEntity(trainer);
+            log.info("trainer is deactivated");
+        }
+        if(!trainer.getIsActive()&&dto.getIsActive()){
+            trainer.setIsActive(true);
+            repository.updateEntity(trainer);
+            log.info("trainer is active");
+        }
+        if(!trainer.getIsActive()&& !dto.getIsActive()){
+            log.info("trainer is already deactivated");
+        }
+
     }
 
     @Override
     public void updatePassword(ChangePassDTO dto) {
-        repository.updatePass(dto);
+        Trainer trainer= repository.findEntity(dto.getUsername());
+        if(trainer==null){
+            throw new TraineeNotFoundException("trainer not found with this username "+ dto.getUsername());
+        }
+        trainer.setPassword(dto.getNewPass());
+        repository.updateEntity(trainer);
     }
 
     @Override
@@ -99,7 +124,7 @@ public class TrainerService implements ITrainerService{
         List<Trainer> list = null;
         list= repository.getTrainerWithoutTrainee(username);
         if(list==null){
-            throw new TraineeNotFoundException("trainee not found with this username "+username);
+            throw new TrainerNotFoundException("trainer not found with this username "+username);
         }
 
         return list.stream().map(e->mapper.mapTrainerResponseGet(e)).toList();

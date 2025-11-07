@@ -3,7 +3,9 @@ package org.oscar.gym.utils;
 
 import org.oscar.gym.dtos.TraineeDTO;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
+import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
+import org.oscar.gym.dtos.request.training.TrainingDTO;
 import org.oscar.gym.dtos.response.trainee.TraineeResponse;
 import org.oscar.gym.dtos.response.TrainerResponsetemp;
 import org.oscar.gym.dtos.response.TrainingResponse;
@@ -19,12 +21,19 @@ import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.Training;
 import org.oscar.gym.entity.TrainingType;
+import org.oscar.gym.exception.TraineeNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class Mapper {
+
+    private final IGenerator generator;
+
+    public Mapper(IGenerator generator) {
+        this.generator = generator;
+    }
 
 
     public Trainee mapTraineeExtend(TraineeDTO dto){
@@ -167,5 +176,39 @@ public class Mapper {
         response.setTraineeName(training.getTrainee().getFirstName());
         return response;
     }
+
+    //=======================================================================================
+    //Mapper dto to Entity
+
+    public Trainer mapTrainerEntity(TrainerRegistrationRequest dto){
+        Trainer entity = new Trainer();
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setUsername(generator.createUser(dto.getFirstName(), dto.getLastName()));
+        entity.setPassword(generator.generatePass());
+        entity.setIsActive(true);
+        return entity;
+    }
+
+    public Training mapTrainingEntity(TrainingDTO dto){
+        Training entity = new Training();
+        entity.setName(dto.getName());
+        entity.setTrainingDate(dto.getDate());
+        entity.setDurationTraining(dto.getDuration());
+        return entity;
+    }
+
+    public Trainee mapTraineeEntity(TraineeRegistrationRequest dto){
+        Trainee entity = new Trainee();
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setUsername(generator.createUser(dto.getFirstName(), dto.getLastName()));
+        entity.setPassword(generator.generatePass());
+        entity.setAddress(dto.getAddress());
+        entity.setDateOfBirth(dto.getDateOfBirth());
+        entity.setIsActive(true);
+        return entity;
+    }
+
 
 }

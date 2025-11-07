@@ -13,10 +13,12 @@ import org.oscar.gym.dtos.response.trainer.TrainerResponseExtend;
 import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.TrainingType;
 import org.oscar.gym.repository.trainer.TrainerRepositoryImp;
+import org.oscar.gym.repository.trainig_types.TrainingTypesImp;
 import org.oscar.gym.security.Authenticator;
 import org.oscar.gym.service.trainer.TrainerService;
 import org.oscar.gym.utils.Mapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
@@ -26,6 +28,9 @@ public class TrainerTest {
 
     @Mock
     private TrainerRepositoryImp repository;
+
+    @Mock
+    private TrainingTypesImp repoTypes;
 
     @Mock
     private Authenticator authenticator;
@@ -51,23 +56,24 @@ public class TrainerTest {
 
     @Test
     public void createTrainer() {
-        when(repository.saveEntity(requestSave)).thenReturn(trainer);
+        when(mapper.mapTrainerEntity(requestSave)).thenReturn(trainer);
+        when(repository.saveEntity(trainer)).thenReturn(trainer);
 
         service.saveTrainer(requestSave);
 
-        verify(repository, times(1)).saveEntity(requestSave);
+        verify(repository, times(1)).saveEntity(trainer);
     }
 
     @Test
     public void updateTrainer() {
-        when(repository.updateEntity(requestUpdate)).thenReturn(trainer);
+        when(repository.findEntity(requestUpdate.getUsername())).thenReturn(trainer);
+        when(repository.updateEntity(trainer)).thenReturn(trainer);
         when(mapper.mapTrainerResponseGetMethod(trainer)).thenReturn(responseUpdate);
-
         TrainerResponseExtend result = service.updateTrainer(requestUpdate);
-
-        assertNotNull(result);
-
-        verify(repository, times(1)).updateEntity(requestUpdate);
+        verify(repository, times(1)).findEntity(requestUpdate.getUsername());
+        verify(repository, times(1)).updateEntity(trainer);
+        verify(mapper, times(1)).mapTrainerResponseGetMethod(trainer);
+        assertEquals(responseUpdate, result);
     }
 
     @Test
