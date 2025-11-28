@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.oscar.gym.dtos.ChangePassDTO;
-import org.oscar.gym.dtos.Login;
 import org.oscar.gym.dtos.UserActivateDeActivate;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateListTrainerRequest;
@@ -15,11 +14,7 @@ import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
 import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
 import org.oscar.gym.dtos.response.trainer.TrainerResponse;
-import org.oscar.gym.exception.TraineeNotFoundException;
-import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.service.trainee.ITraineeService;
-import org.oscar.gym.service.trainee.TraineeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +31,7 @@ public class TraineeController {
 
     private final ITraineeService traineeService;
 
-    public TraineeController(ITraineeService traineeService, IAuthenticator authenticator) {
+    public TraineeController(ITraineeService traineeService) {
         this.traineeService = traineeService;
     }
 

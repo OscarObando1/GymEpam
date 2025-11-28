@@ -14,7 +14,6 @@ import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.entity.TrainingType;
 import org.oscar.gym.repository.trainer.TrainerRepositoryImp;
 import org.oscar.gym.repository.trainig_types.TrainingTypesImp;
-import org.oscar.gym.security.Authenticator;
 import org.oscar.gym.service.trainer.TrainerService;
 import org.oscar.gym.utils.Mapper;
 

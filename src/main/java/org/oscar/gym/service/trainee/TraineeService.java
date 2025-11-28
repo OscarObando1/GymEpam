@@ -14,7 +14,6 @@ import org.oscar.gym.entity.Trainer;
 import org.oscar.gym.exception.TraineeNotFoundException;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
-import org.oscar.gym.security.IAuthenticator;
 import org.oscar.gym.utils.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +27,11 @@ public class TraineeService implements ITraineeService  {
 
     private final TraineeRepository repository;
     private final Mapper mapper;
-    private final IAuthenticator authenticator;
     private final TrainerRepository repoTrainer;
 
-    public TraineeService(TraineeRepository repository, Mapper mapper, IAuthenticator authenticator, TrainerRepository repoTrainer) {
+    public TraineeService(TraineeRepository repository, Mapper mapper,TrainerRepository repoTrainer) {
         this.repository = repository;
         this.mapper = mapper;
-        this.authenticator = authenticator;
         this.repoTrainer = repoTrainer;
     }
 

@@ -8,7 +8,3 @@ services:
       MYSQL_DATABASE: gymdb
     ports:
       - "3306:3306"
-  session:
-    image: redis
-    ports:
-      - "6379:6379"

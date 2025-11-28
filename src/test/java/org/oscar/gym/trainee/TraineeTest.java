@@ -6,14 +6,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.oscar.gym.dtos.Login;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.response.trainee.TraineeRegistrationResponse;
 import org.oscar.gym.dtos.response.trainee.TraineeResponseExtend;
 import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.repository.trainee.TraineeRepositoryImp;
-import org.oscar.gym.security.Authenticator;
 import org.oscar.gym.service.trainee.TraineeService;
 import org.oscar.gym.utils.Mapper;
 
