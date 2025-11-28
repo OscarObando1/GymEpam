@@ -1,6 +1,7 @@
 package org.oscar.gym.utils;
 
 import jakarta.persistence.EntityManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;

@@ -15,8 +15,10 @@ import org.oscar.gym.exception.TraineeNotFoundException;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.oscar.gym.utils.Mapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.beans.Encoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,17 +30,21 @@ public class TraineeService implements ITraineeService  {
     private final TraineeRepository repository;
     private final Mapper mapper;
     private final TrainerRepository repoTrainer;
+    private final PasswordEncoder encoder;
 
-    public TraineeService(TraineeRepository repository, Mapper mapper,TrainerRepository repoTrainer) {
+    public TraineeService(TraineeRepository repository, Mapper mapper, TrainerRepository repoTrainer, PasswordEncoder encoder) {
         this.repository = repository;
         this.mapper = mapper;
         this.repoTrainer = repoTrainer;
+        this.encoder = encoder;
     }
 
     public TraineeRegistrationResponse saveTrainee(TraineeRegistrationRequest dto){
         Trainee trainee= mapper.mapTraineeEntity(dto);
+        TraineeRegistrationResponse response = mapper.mapTraineeResponseCreate(trainee);
+        trainee.setPassword(encoder.encode(trainee.getPassword()));
         repository.saveEntity(trainee);
-        return mapper.mapTraineeResponseCreate(trainee);
+        return response;
     }
 
     public TraineeResponseExtend findTrainee(String username){
@@ -100,7 +106,7 @@ public class TraineeService implements ITraineeService  {
         if(trainee==null){
             throw new TraineeNotFoundException("trainee not found with this username "+ dto.getUsername());
         }
-        trainee.setPassword(dto.getNewPass());
+        trainee.setPassword(encoder.encode(dto.getNewPass()));
         repository.updateEntity(trainee);
     }
 

@@ -31,9 +31,6 @@ public class TrainerTest {
     @Mock
     private TrainingTypesImp repoTypes;
 
-    @Mock
-    private Authenticator authenticator;
-
     @InjectMocks
     private TrainerService service;
 

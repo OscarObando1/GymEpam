@@ -14,6 +14,7 @@ import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.repository.trainee.TraineeRepositoryImp;
 import org.oscar.gym.service.trainee.TraineeService;
 import org.oscar.gym.utils.Mapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -27,14 +28,14 @@ public class TraineeTest {
     @Mock
     private TraineeRepositoryImp repository;
 
-    @Mock
-    private Authenticator authenticator;
-
     @InjectMocks
     private TraineeService traineeService;
 
     @Mock
     private Mapper mapper;
+
+    @Mock
+    private PasswordEncoder encoder;
 
       private Trainee trainee;
       private TraineeRegistrationRequest requestSave;
@@ -55,6 +56,7 @@ public class TraineeTest {
     public void createTrainee() {
         when(mapper.mapTraineeEntity(requestSave)).thenReturn(trainee);
         when(repository.saveEntity(trainee)).thenReturn(trainee);
+        when(encoder.encode(any())).thenReturn("HASH");
         traineeService.saveTrainee(requestSave);
         verify(repository, times(1)).saveEntity(any(Trainee.class));
     }
