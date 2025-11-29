@@ -1,10 +1,7 @@
 package org.oscar.gym.configuration;
 
-import org.oscar.gym.entity.Trainee;
 import org.oscar.gym.entity.User;
 import org.oscar.gym.repository.UserRepository;
-import org.oscar.gym.service.trainee.TraineeService;
-import org.oscar.gym.service.trainer.TrainerService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import org.oscar.gym.dtos.Login;
-import org.springframework.http.HttpStatus;
+import org.oscar.gym.security.JwtToken;
+import org.oscar.gym.security.AuthCredentials;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 )
 public class LoginController {
 
+    private final JwtToken token;
+    private final AuthCredentials credentials;
+
+    public LoginController(JwtToken token, AuthCredentials credentials) {
+        this.token = token;
+        this.credentials = credentials;
+    }
+
     @PostMapping("/login")
     @Operation(
             method = "POST",
@@ -28,7 +38,8 @@ public class LoginController {
                     schema = @Schema(implementation = Login.class))),
             responses = {@ApiResponse(responseCode = "200",description = "user logged"),@ApiResponse(responseCode = "403",description = "user not valid")}
     )
-    public ResponseEntity<String> login(HttpSession session, @RequestBody Login dto) {
-        return ResponseEntity.ok("User logged ");
+    public ResponseEntity<?> login(HttpSession session, @RequestBody Login dto) {
+        credentials.isAuth(dto);
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,token.create(dto.getUsername())).build();
     }
 }
