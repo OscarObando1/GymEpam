@@ -38,8 +38,8 @@ public class LoginController {
                     schema = @Schema(implementation = Login.class))),
             responses = {@ApiResponse(responseCode = "200",description = "user logged"),@ApiResponse(responseCode = "403",description = "user not valid")}
     )
-    public ResponseEntity<?> login(HttpSession session, @RequestBody Login dto) {
+    public ResponseEntity<?> login( @RequestBody Login dto) {
         credentials.isAuth(dto);
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,token.create(dto.getUsername())).build();
+        return ResponseEntity.ok().body(token.create(dto.getUsername()));
     }
 }
