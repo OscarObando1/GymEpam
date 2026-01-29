@@ -1,19 +1,18 @@
 package org.oscar.gym.controller;
 
+import org.oscar.gym.dtos.Login;
+import org.oscar.gym.security.AuthCredentials;
+import org.oscar.gym.security.JwtToken;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
-import org.oscar.gym.dtos.Login;
-import org.oscar.gym.security.JwtToken;
-import org.oscar.gym.security.AuthCredentials;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(
