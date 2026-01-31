@@ -1,6 +1,8 @@
 package org.oscar.gym.service.training;
 
 import lombok.extern.slf4j.Slf4j;
+import org.oscar.gym.consume_api.ConsumeApi;
+import org.oscar.gym.dtos.microservice.StatisticDto;
 import org.oscar.gym.dtos.request.training.TraineeTrainingsListResquest;
 import org.oscar.gym.dtos.request.training.TrainerTrainingsListRequest;
 import org.oscar.gym.dtos.request.training.TrainingDTO;
@@ -17,7 +19,10 @@ import org.oscar.gym.exception.TrainerNotFoundException;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.oscar.gym.repository.training.TrainingRepository;
+import org.oscar.gym.security.JwtAuthToken;
 import org.oscar.gym.utils.Mapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,12 +36,14 @@ public class TrainigService implements ITrainingService{
     private final TraineeRepository traineeRepository;
     private final TrainerRepository trainerRepository;
     private final Mapper mapper;
+    private final ConsumeApi consume;
 
-    public TrainigService(TrainingRepository repository, TraineeRepository traineeRepository, TrainerRepository trainerRepository, Mapper mapper) {
+    public TrainigService(TrainingRepository repository, TraineeRepository traineeRepository, TrainerRepository trainerRepository, Mapper mapper, ConsumeApi consume) {
         this.repository = repository;
         this.traineeRepository = traineeRepository;
         this.trainerRepository = trainerRepository;
         this.mapper = mapper;
+        this.consume = consume;
     }
 
     @Override
@@ -55,6 +62,17 @@ public class TrainigService implements ITrainingService{
         entity.setTrainer(trainer);
         entity.setTrainingType(trainer.getSpecialization());
         repository.createTraining(entity);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String jwt = null;
+        if (authentication instanceof JwtAuthToken) {
+            jwt = ((JwtAuthToken) authentication).getJwt();
+        }
+        StatisticDto dtoMicroservice=null;
+        dtoMicroservice = mapper.mapStatisticDto(entity);
+        consume.sendTrainingRecord(dtoMicroservice, jwt);
+
+
+
     }
 
 
