@@ -70,9 +70,6 @@ public class TrainigService implements ITrainingService{
         StatisticDto dtoMicroservice=null;
         dtoMicroservice = mapper.mapStatisticDto(entity);
         consume.sendTrainingRecord(dtoMicroservice, jwt);
-
-
-
     }
 
 
