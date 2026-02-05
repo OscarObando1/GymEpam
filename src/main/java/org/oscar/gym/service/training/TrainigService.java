@@ -45,7 +45,6 @@ public class TrainigService implements ITrainingService{
         this.mapper = mapper;
         this.consume = consume;
     }
-
     @Override
     public void createTraining(TrainingDTO dto) {
         Training entity = null;
@@ -71,6 +70,7 @@ public class TrainigService implements ITrainingService{
         dtoMicroservice = mapper.mapStatisticDto(entity);
         consume.sendTrainingRecord(dtoMicroservice, jwt);
     }
+
 
 
     @Override
