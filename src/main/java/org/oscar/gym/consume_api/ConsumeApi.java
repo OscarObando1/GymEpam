@@ -30,30 +30,7 @@ public class ConsumeApi {
         this.webClientBuilder = webClientBuilder;
     }
 
-    @CircuitBreaker(name = "statisticsService", fallbackMethod = "sendTrainingRecordFallback")
-    public void sendTrainingRecord(StatisticDto dto, String jwt) {
-        ClientResponse response = webClientBuilder.build()
-                .post()
-                .uri("http://" + serviceName + "/statistics")
-                .header("Authorization", "Bearer " + jwt)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(dto)
-                .exchangeToMono(clientResponse -> Mono.just(clientResponse))
-                .block();
-
-        int statusCode = response.statusCode().value();
-        if (response.statusCode().is5xxServerError()) {
-            throw new RuntimeException("Server unavaliable");
-        }
-        String body = response.bodyToMono(String.class).block();
-
-        log.info("Response from {} - Status: {}", serviceName, statusCode);
-    }
-
-    public void sendTrainingRecordFallback(StatisticDto dto, String jwt, Throwable t) {
-        log.info("The statistics service is currently unavailable");
-        fallbackList.add(dto);
-    }
+   
 
 }
 

@@ -1,7 +1,7 @@
 package org.oscar.gym.service.training;
 
 import lombok.extern.slf4j.Slf4j;
-import org.oscar.gym.consume_api.ConsumeApi;
+import org.oscar.gym.producer.StatisticsProducer;
 import org.oscar.gym.dtos.microservice.StatisticDto;
 import org.oscar.gym.dtos.request.training.TraineeTrainingsListResquest;
 import org.oscar.gym.dtos.request.training.TrainerTrainingsListRequest;
@@ -36,14 +36,14 @@ public class TrainigService implements ITrainingService{
     private final TraineeRepository traineeRepository;
     private final TrainerRepository trainerRepository;
     private final Mapper mapper;
-    private final ConsumeApi consume;
+    private final StatisticsProducer statisticsProducer;
 
-    public TrainigService(TrainingRepository repository, TraineeRepository traineeRepository, TrainerRepository trainerRepository, Mapper mapper, ConsumeApi consume) {
+    public TrainigService(TrainingRepository repository, TraineeRepository traineeRepository, TrainerRepository trainerRepository, Mapper mapper, StatisticsProducer statisticsProducer) {
         this.repository = repository;
         this.traineeRepository = traineeRepository;
         this.trainerRepository = trainerRepository;
         this.mapper = mapper;
-        this.consume = consume;
+        this.statisticsProducer = statisticsProducer;
     }
     @Override
     public void createTraining(TrainingDTO dto) {
@@ -61,14 +61,9 @@ public class TrainigService implements ITrainingService{
         entity.setTrainer(trainer);
         entity.setTrainingType(trainer.getSpecialization());
         repository.createTraining(entity);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String jwt = null;
-        if (authentication instanceof JwtAuthToken) {
-            jwt = ((JwtAuthToken) authentication).getJwt();
-        }
         StatisticDto dtoMicroservice=null;
         dtoMicroservice = mapper.mapStatisticDto(entity);
-        consume.sendTrainingRecord(dtoMicroservice, jwt);
+        statisticsProducer.sendTrainingRecord(dtoMicroservice);
     }
 
 
