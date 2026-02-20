@@ -21,9 +21,9 @@ public class StatisticsProducer {
         kafkaTemplate.send(statisticsTopic, dto.getTrainerUsername(), dto)
                 .whenComplete((result, ex) -> {
                     if (ex != null) {
-                        log.error("Error enviando StatisticDto a Kafka: {}", ex.getMessage());
+                        log.error("error sending dto: {}", ex.getMessage());
                     } else {
-                        log.info("StatisticDto enviado al topic {} - partition: {}, offset: {}",
+                        log.info("StatisticDto sent to the topic {} - partition: {}, offset: {}",
                                 statisticsTopic, result.getRecordMetadata().partition(), result.getRecordMetadata().offset());
                     }
                 });
