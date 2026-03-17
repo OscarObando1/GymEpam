@@ -18,7 +18,7 @@ public class SetupHooks {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Value("${TEST_SEED_PASSWORD:password123}")
+    @Value("${test.seed.password}")
     private String seedPassword;
 
     /**
