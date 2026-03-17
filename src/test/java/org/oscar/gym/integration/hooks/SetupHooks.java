@@ -2,6 +2,7 @@ package org.oscar.gym.integration.hooks;
 
 import io.cucumber.java.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -16,6 +17,9 @@ public class SetupHooks {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Value("${TEST_SEED_PASSWORD:password123}")
+    private String seedPassword;
 
     /**
      * Cleans all tables and seeds base test data before each scenario.
@@ -32,7 +36,7 @@ public class SetupHooks {
         jdbcTemplate.execute("DELETE FROM user");
         jdbcTemplate.execute("DELETE FROM training_type");
 
-        String pass = passwordEncoder.encode("password123");
+        String pass = passwordEncoder.encode(seedPassword);
 
         // Training types
         jdbcTemplate.update("INSERT INTO training_type (id, name) VALUES (?, ?)", 1L, "LIFTING");
