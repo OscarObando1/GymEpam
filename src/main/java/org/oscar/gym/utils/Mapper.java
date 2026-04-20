@@ -2,6 +2,7 @@ package org.oscar.gym.utils;
 
 
 import org.oscar.gym.dtos.TraineeDTO;
+import org.oscar.gym.dtos.microservice.StatisticDto;
 import org.oscar.gym.dtos.request.trainee.TraineeRegistrationRequest;
 import org.oscar.gym.dtos.request.trainee.TraineeUpdateRequest;
 import org.oscar.gym.dtos.request.trainer.TrainerRegistrationRequest;
@@ -208,6 +209,19 @@ public class Mapper {
         entity.setDateOfBirth(dto.getDateOfBirth());
         entity.setIsActive(true);
         return entity;
+    }
+    //=======================================================================
+    //==============mapper microservice=============================================
+
+    public StatisticDto mapStatisticDto(Training entity){
+        StatisticDto dto = new StatisticDto();
+        dto.setTrainerUsername(entity.getTrainer().getUsername());
+        dto.setTrainerFirstName(entity.getTrainer().getFirstName());
+        dto.setTrainerLastName(entity.getTrainer().getLastName());
+        dto.setIsActive(entity.getTrainer().getIsActive());
+        dto.setTrainingDate(entity.getTrainingDate());
+        dto.setTrainingDuration(entity.getDurationTraining());
+        return dto;
     }
 
 

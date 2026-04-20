@@ -1,6 +1,8 @@
 package org.oscar.gym.service.training;
 
 import lombok.extern.slf4j.Slf4j;
+import org.oscar.gym.producer.StatisticsProducer;
+import org.oscar.gym.dtos.microservice.StatisticDto;
 import org.oscar.gym.dtos.request.training.TraineeTrainingsListResquest;
 import org.oscar.gym.dtos.request.training.TrainerTrainingsListRequest;
 import org.oscar.gym.dtos.request.training.TrainingDTO;
@@ -17,7 +19,10 @@ import org.oscar.gym.exception.TrainerNotFoundException;
 import org.oscar.gym.repository.trainee.TraineeRepository;
 import org.oscar.gym.repository.trainer.TrainerRepository;
 import org.oscar.gym.repository.training.TrainingRepository;
+import org.oscar.gym.security.JwtAuthToken;
 import org.oscar.gym.utils.Mapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,14 +36,15 @@ public class TrainigService implements ITrainingService{
     private final TraineeRepository traineeRepository;
     private final TrainerRepository trainerRepository;
     private final Mapper mapper;
+    private final StatisticsProducer statisticsProducer;
 
-    public TrainigService(TrainingRepository repository, TraineeRepository traineeRepository, TrainerRepository trainerRepository, Mapper mapper) {
+    public TrainigService(TrainingRepository repository, TraineeRepository traineeRepository, TrainerRepository trainerRepository, Mapper mapper, StatisticsProducer statisticsProducer) {
         this.repository = repository;
         this.traineeRepository = traineeRepository;
         this.trainerRepository = trainerRepository;
         this.mapper = mapper;
+        this.statisticsProducer = statisticsProducer;
     }
-
     @Override
     public void createTraining(TrainingDTO dto) {
         Training entity = null;
@@ -55,7 +61,11 @@ public class TrainigService implements ITrainingService{
         entity.setTrainer(trainer);
         entity.setTrainingType(trainer.getSpecialization());
         repository.createTraining(entity);
+        StatisticDto dtoMicroservice=null;
+        dtoMicroservice = mapper.mapStatisticDto(entity);
+        statisticsProducer.sendTrainingRecord(dtoMicroservice);
     }
+
 
 
     @Override
